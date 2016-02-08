@@ -87,18 +87,17 @@ class ChromaView(initialColor: Int, context: Context) : LinearLayout(context) {
 
       val seekbar = root.findViewById(R.id.seekbar) as SeekBar
       seekbar.progress = initialProgress
-      seekbar.setOnSeekBarChangeListener(
-          object : SeekBar.OnSeekBarChangeListener {
-            override fun onStartTrackingTouch(seekbar: SeekBar?) { }
+      seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        override fun onStartTrackingTouch(seekbar: SeekBar?) { }
 
-            override fun onStopTrackingTouch(seekbar: SeekBar?) { }
+        override fun onStopTrackingTouch(seekbar: SeekBar?) { }
 
-            override fun onProgressChanged(seekbar: SeekBar?, progress: Int, fromUser: Boolean) {
-              currentProgress = progress
-              progressView.text = currentProgress.toString()
-              listener?.invoke()
-            }
-          })
+        override fun onProgressChanged(seekbar: SeekBar?, progress: Int, fromUser: Boolean) {
+          currentProgress = progress
+          progressView.text = currentProgress.toString()
+          listener?.invoke()
+        }
+      })
     }
 
     fun registerListener(listener: () -> Unit): Unit {

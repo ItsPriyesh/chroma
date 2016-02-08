@@ -20,8 +20,18 @@ import android.content.Context
 import android.graphics.Color
 import android.support.v7.app.AlertDialog
 
-class ChromaDialog(context: Context) : AlertDialog(context) {
+class ChromaDialog(context: Context, listener: ColorSelectListener) : AlertDialog(context) {
+
+  interface ColorSelectListener {
+    fun onColorSelected(color: Int)
+  }
+
   init {
-    setView(ChromaView(Color.RED, context))
+    val chromaView = ChromaView(Color.RED, context)
+    setView(chromaView)
+    setButton(BUTTON_NEGATIVE, "Cancel", { dialog, which -> })
+    setButton(BUTTON_POSITIVE, "OK", { dialog, which ->
+      listener.onColorSelected(chromaView.currentColor)
+    })
   }
 }
