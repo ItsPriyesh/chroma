@@ -26,6 +26,33 @@ import android.widget.TextView
 
 class ChromaView(initialColor: Int, context: Context) : LinearLayout(context) {
 
+  var currentColor = initialColor
+
+  init {
+    orientation = VERTICAL
+    clipToPadding = false
+
+    val colorView = ColorView(currentColor, context)
+    addView(colorView)
+
+    val channelViews = listOf(
+        ChannelView("R", Color.red(currentColor), context),
+        ChannelView("G", Color.green(currentColor), context),
+        ChannelView("B", Color.blue(currentColor), context)
+    )
+
+    val seekbarChangeListener: () -> Unit = {
+      val currentValues = channelViews.map { it.currentProgress }
+      currentColor = Color.rgb(currentValues[0], currentValues[1], currentValues[2])
+      colorView.setColor(currentColor)
+    }
+
+    channelViews.forEach { it ->
+      it.registerListener(seekbarChangeListener)
+      addView(it)
+    }
+  }
+
   private class ColorView(initialColor: Int, context: Context) : View(context) {
     init {
       setColor(initialColor)
@@ -76,33 +103,6 @@ class ChromaView(initialColor: Int, context: Context) : LinearLayout(context) {
 
     fun registerListener(listener: () -> Unit): Unit {
       this.listener = listener
-    }
-  }
-
-  var currentColor = initialColor
-
-  init {
-    orientation = VERTICAL
-    clipToPadding = false
-
-    val colorView = ColorView(currentColor, context)
-    addView(colorView)
-
-    val channelViews = listOf(
-        ChannelView("R", Color.red(currentColor), context),
-        ChannelView("G", Color.green(currentColor), context),
-        ChannelView("B", Color.blue(currentColor), context)
-    )
-
-    val seekbarChangeListener: () -> Unit = {
-      val currentValues = channelViews.map { it.currentProgress }
-      currentColor = Color.rgb(currentValues[0], currentValues[1], currentValues[2])
-      colorView.setColor(currentColor)
-    }
-
-    channelViews.forEach { it ->
-      it.registerListener(seekbarChangeListener)
-      addView(it)
     }
   }
 }
