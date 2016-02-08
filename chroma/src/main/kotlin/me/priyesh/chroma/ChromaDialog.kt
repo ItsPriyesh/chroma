@@ -17,8 +17,11 @@
 package me.priyesh.chroma
 
 import android.content.Context
+import android.graphics.Color
 import android.support.v7.app.AlertDialog
 
 class ChromaDialog(context: Context) : AlertDialog(context) {
-
+  init {
+    setView(ChromaView(Color.RED, context))
+  }
 }

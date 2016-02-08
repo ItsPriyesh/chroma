@@ -48,7 +48,7 @@ class ChromaView(initialColor: Int, context: Context) : LinearLayout(context) {
         throw IllegalArgumentException("Starting value must be between 0 and 255")
       }
 
-      val rootView = inflate(context, R.layout.channel_row, null)
+      val rootView = inflate(context, R.layout.channel_row, this)
       bindViews(rootView)
     }
 
@@ -60,11 +60,9 @@ class ChromaView(initialColor: Int, context: Context) : LinearLayout(context) {
 
       (root.findViewById(R.id.seekbar) as SeekBar).setOnSeekBarChangeListener(
           object : SeekBar.OnSeekBarChangeListener {
-            override fun onStartTrackingTouch(seekbar: SeekBar?) {
-            }
+            override fun onStartTrackingTouch(seekbar: SeekBar?) { }
 
-            override fun onStopTrackingTouch(seekbar: SeekBar?) {
-            }
+            override fun onStopTrackingTouch(seekbar: SeekBar?) { }
 
             override fun onProgressChanged(seekbar: SeekBar?, progress: Int, fromUser: Boolean) {
               currentValue = progress

@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
     fab.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
-        ChromaDialog chromaDialog = new ChromaDialog(MainActivity.this);
+        new ChromaDialog(MainActivity.this).show();
       }
     });
   }
