@@ -105,6 +105,4 @@ class ChromaView(initialColor: Int, context: Context) : LinearLayout(context) {
       addView(it)
     }
   }
-
-  fun getColor(): Int = currentColor
 }
