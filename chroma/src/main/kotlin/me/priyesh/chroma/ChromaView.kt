@@ -24,20 +24,18 @@ import android.widget.RelativeLayout
 import android.widget.SeekBar
 import android.widget.TextView
 
-class ChromaView(color: Int, context: Context) : LinearLayout(context) {
+class ChromaView(initialColor: Int, context: Context) : LinearLayout(context) {
 
-  private class ColorView(color: Int, context: Context) : View(context) {
+  private class ColorView(initialColor: Int, context: Context) : View(context) {
     init {
-      setBackgroundColor(color)
+      setColor(initialColor)
       layoutParams = LayoutParams(
           LayoutParams.MATCH_PARENT,
           resources.getDimensionPixelSize(R.dimen.color_view_height)
       )
     }
 
-    fun setColor(red: Int, green: Int, blue: Int): Unit {
-      setBackgroundColor(Color.rgb(red, green, blue))
-    }
+    fun setColor(color: Int): Unit = setBackgroundColor(color)
   }
 
   private class ChannelView(val name: String, val startingValue: Int, context: Context) : RelativeLayout(context) {
@@ -62,9 +60,11 @@ class ChromaView(color: Int, context: Context) : LinearLayout(context) {
 
       (root.findViewById(R.id.seekbar) as SeekBar).setOnSeekBarChangeListener(
           object : SeekBar.OnSeekBarChangeListener {
-            override fun onStartTrackingTouch(seekbar: SeekBar?) { }
+            override fun onStartTrackingTouch(seekbar: SeekBar?) {
+            }
 
-            override fun onStopTrackingTouch(seekbar: SeekBar?) { }
+            override fun onStopTrackingTouch(seekbar: SeekBar?) {
+            }
 
             override fun onProgressChanged(seekbar: SeekBar?, progress: Int, fromUser: Boolean) {
               currentValue = progress
@@ -79,11 +79,14 @@ class ChromaView(color: Int, context: Context) : LinearLayout(context) {
     }
   }
 
+  var currentColor = initialColor
+
   init {
     orientation = VERTICAL
     clipToPadding = false
 
-    addView(ColorView(color, context))
+    val colorView = ColorView(initialColor, context)
+    addView(colorView)
 
     val channelViews = listOf(
         ChannelView("R", 0, context),
@@ -92,15 +95,16 @@ class ChromaView(color: Int, context: Context) : LinearLayout(context) {
     )
 
     val seekbarChangeListener: () -> Unit = {
-      
+      val currentValues = channelViews.map { it.currentValue }
+      currentColor = Color.rgb(currentValues[0], currentValues[1], currentValues[2])
+      colorView.setColor(currentColor)
     }
 
-    channelViews.forEach {
-      it -> it.registerListener(seekbarChangeListener)
+    channelViews.forEach { it ->
+      it.registerListener(seekbarChangeListener)
+      addView(it)
     }
   }
 
-  fun getColor(): Int {
-
-  }
+  fun getColor(): Int = currentColor
 }
