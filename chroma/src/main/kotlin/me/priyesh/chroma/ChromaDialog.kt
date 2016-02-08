@@ -19,6 +19,6 @@ package me.priyesh.chroma
 import android.content.Context
 import android.support.v7.app.AlertDialog
 
-public class ChromaDialog(context: Context) : AlertDialog(context) {
+class ChromaDialog(context: Context) : AlertDialog(context) {
 
 }
