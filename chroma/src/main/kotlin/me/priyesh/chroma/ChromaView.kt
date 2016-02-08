@@ -38,13 +38,13 @@ class ChromaView(initialColor: Int, context: Context) : LinearLayout(context) {
     fun setColor(color: Int): Unit = setBackgroundColor(color)
   }
 
-  private class ChannelView(val name: String, val startingValue: Int, context: Context) : RelativeLayout(context) {
+  private class ChannelView(val name: String, val initialProgress: Int, context: Context) : RelativeLayout(context) {
 
-    var currentValue = startingValue
+    var currentProgress = initialProgress
     var listener: (() -> Unit)? = null
 
     init {
-      if (startingValue < 0 || startingValue > 255) {
+      if (initialProgress < 0 || initialProgress > 255) {
         throw IllegalArgumentException("Starting value must be between 0 and 255")
       }
 
@@ -56,17 +56,19 @@ class ChromaView(initialColor: Int, context: Context) : LinearLayout(context) {
       (root.findViewById(R.id.label) as TextView).text = name
 
       val progressView = root.findViewById(R.id.progress_text) as TextView
-      progressView.text = startingValue.toString()
+      progressView.text = initialProgress.toString()
 
-      (root.findViewById(R.id.seekbar) as SeekBar).setOnSeekBarChangeListener(
+      val seekbar = root.findViewById(R.id.seekbar) as SeekBar
+      seekbar.progress = initialProgress
+      seekbar.setOnSeekBarChangeListener(
           object : SeekBar.OnSeekBarChangeListener {
             override fun onStartTrackingTouch(seekbar: SeekBar?) { }
 
             override fun onStopTrackingTouch(seekbar: SeekBar?) { }
 
             override fun onProgressChanged(seekbar: SeekBar?, progress: Int, fromUser: Boolean) {
-              currentValue = progress
-              progressView.text = currentValue.toString()
+              currentProgress = progress
+              progressView.text = currentProgress.toString()
               listener?.invoke()
             }
           })
@@ -83,17 +85,17 @@ class ChromaView(initialColor: Int, context: Context) : LinearLayout(context) {
     orientation = VERTICAL
     clipToPadding = false
 
-    val colorView = ColorView(initialColor, context)
+    val colorView = ColorView(currentColor, context)
     addView(colorView)
 
     val channelViews = listOf(
-        ChannelView("R", 0, context),
-        ChannelView("G", 0, context),
-        ChannelView("B", 0, context)
+        ChannelView("R", Color.red(currentColor), context),
+        ChannelView("G", Color.green(currentColor), context),
+        ChannelView("B", Color.blue(currentColor), context)
     )
 
     val seekbarChangeListener: () -> Unit = {
-      val currentValues = channelViews.map { it.currentValue }
+      val currentValues = channelViews.map { it.currentProgress }
       currentColor = Color.rgb(currentValues[0], currentValues[1], currentValues[2])
       colorView.setColor(currentColor)
     }
