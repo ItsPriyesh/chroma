@@ -3,4 +3,8 @@
 
     <string name="dialog_button_positive">OK</string>
     <string name="dialog_button_negative">Cancel</string>
+
+    <string name="channel_red">R</string>
+    <string name="channel_green">G</string>
+    <string name="channel_blue">B</string>
 </resources>

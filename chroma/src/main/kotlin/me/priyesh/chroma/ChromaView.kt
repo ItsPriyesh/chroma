@@ -36,9 +36,9 @@ class ChromaView(initialColor: Int, context: Context) : LinearLayout(context) {
     addView(colorView)
 
     val channelViews = listOf(
-        ChannelView("R", Color.red(currentColor), context),
-        ChannelView("G", Color.green(currentColor), context),
-        ChannelView("B", Color.blue(currentColor), context)
+        ChannelView(R.string.channel_red, Color.red(currentColor), context),
+        ChannelView(R.string.channel_green, Color.green(currentColor), context),
+        ChannelView(R.string.channel_blue, Color.blue(currentColor), context)
     )
 
     val seekbarChangeListener: () -> Unit = {
@@ -70,14 +70,17 @@ class ChromaView(initialColor: Int, context: Context) : LinearLayout(context) {
     fun setColor(color: Int): Unit = setBackgroundColor(color)
   }
 
-  private class ChannelView(val name: String, val initialProgress: Int, context: Context) : RelativeLayout(context) {
+  private class ChannelView(
+      private val labelResourceId: Int,
+      private val initialProgress: Int,
+      context: Context) : RelativeLayout(context) {
 
     var currentProgress = initialProgress
     var listener: (() -> Unit)? = null
 
     init {
       if (initialProgress < 0 || initialProgress > 255) {
-        throw IllegalArgumentException("Starting value must be between 0 and 255")
+        throw IllegalArgumentException("Initial progress must be between 0 and 255")
       }
 
       val rootView = inflate(context, R.layout.channel_row, this)
@@ -85,7 +88,7 @@ class ChromaView(initialColor: Int, context: Context) : LinearLayout(context) {
     }
 
     private fun bindViews(root: View): Unit {
-      (root.findViewById(R.id.label) as TextView).text = name
+      (root.findViewById(R.id.label) as TextView).text = context.getString(labelResourceId)
 
       val progressView = root.findViewById(R.id.progress_text) as TextView
       progressView.text = initialProgress.toString()
