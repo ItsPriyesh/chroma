@@ -17,21 +17,49 @@
 package me.priyesh.chroma
 
 import android.content.Context
-import android.graphics.Color
 import android.support.v7.app.AlertDialog
 
-class ChromaDialog(context: Context, listener: ColorSelectListener) : AlertDialog(context) {
+class ChromaDialog private constructor(
+    context: Context,
+    initialColor: Int,
+    listener: ColorSelectListener?) : AlertDialog(context) {
+
+  companion object {
+    fun with(context: Context): Builder = ChromaDialog.Builder(context)
+  }
+
+  class Builder(private val context: Context) {
+
+    private var initialColor: Int = -1
+    private var listener: ColorSelectListener? = null
+
+    fun initialColor(initialColor: Int): Builder {
+      this.initialColor = initialColor
+      return this
+    }
+
+    fun onColorSelected(listener: ColorSelectListener): Builder {
+      this.listener = listener
+      return this
+    }
+
+    fun show(): Unit = ChromaDialog(context, initialColor, listener).show()
+  }
 
   interface ColorSelectListener {
     fun onColorSelected(color: Int)
   }
 
   init {
-    val chromaView = ChromaView(Color.RED, context)
+    val chromaView = ChromaView(
+        if (initialColor > 0) initialColor
+        else context.getColor(R.color.default_color),
+        context)
+
     setView(chromaView)
     setButton(BUTTON_NEGATIVE, "Cancel", { dialog, which -> })
     setButton(BUTTON_POSITIVE, "OK", { dialog, which ->
-      listener.onColorSelected(chromaView.currentColor)
+      listener?.onColorSelected(chromaView.currentColor)
     })
   }
 }

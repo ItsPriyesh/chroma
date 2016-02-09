@@ -19,11 +19,13 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
     fab.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
-        new ChromaDialog(MainActivity.this, new ChromaDialog.ColorSelectListener() {
-          @Override public void onColorSelected(int color) {
+        ChromaDialog.Companion
+            .with(MainActivity.this)
+            .onColorSelected(new ChromaDialog.ColorSelectListener() {
+              @Override public void onColorSelected(int color) {
 
-          }
-        }).show();
+              }
+            }).show();
       }
     });
   }
