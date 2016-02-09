@@ -1,1 +1,1 @@
-include ':app', ':chroma'
+include ':chroma-sample', ':chroma'
