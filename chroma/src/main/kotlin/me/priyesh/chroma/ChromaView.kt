@@ -48,8 +48,13 @@ class ChromaView(initialColor: Int, context: Context) : LinearLayout(context) {
     }
 
     channelViews.forEach { it ->
-      it.registerListener(seekbarChangeListener)
       addView(it)
+
+      val layoutParams = it.layoutParams as LinearLayout.LayoutParams
+      layoutParams.topMargin = resources.getDimensionPixelSize(R.dimen.channel_view_margin_top)
+      layoutParams.bottomMargin = resources.getDimensionPixelSize(R.dimen.channel_view_margin_bottom)
+
+      it.registerListener(seekbarChangeListener)
     }
   }
 

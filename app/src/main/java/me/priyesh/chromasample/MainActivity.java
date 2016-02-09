@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
           @Override public void onColorSelected(int color) {
 
           }
-        });
+        }).show();
       }
     });
   }

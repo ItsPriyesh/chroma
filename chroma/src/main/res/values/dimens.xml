@@ -17,4 +17,6 @@
 
 <resources>
     <dimen name="color_view_height">250dp</dimen>
+    <dimen name="channel_view_margin_top">16dp</dimen>
+    <dimen name="channel_view_margin_bottom">4dp</dimen>
 </resources>
