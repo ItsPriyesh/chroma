@@ -57,8 +57,8 @@ class ChromaDialog private constructor(
         context)
 
     setView(chromaView)
-    setButton(BUTTON_NEGATIVE, "Cancel", { dialog, which -> })
-    setButton(BUTTON_POSITIVE, "OK", { dialog, which ->
+    setButton(BUTTON_NEGATIVE, context.getString(R.string.dialog_button_negative), { d, i -> })
+    setButton(BUTTON_POSITIVE, context.getString(R.string.dialog_button_positive), { d, i ->
       listener?.onColorSelected(chromaView.currentColor)
     })
   }
