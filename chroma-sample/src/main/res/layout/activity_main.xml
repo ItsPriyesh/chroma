@@ -22,14 +22,25 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main"/>
+    <TextView
+        android:id="@+id/text_view"
+        android:textColor="@android:color/black"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:textSize="32sp"
+        android:textAllCaps="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email"/>
+        android:layout_marginBottom="32dp"
+        android:layout_marginRight="24dp"
+        android:src="@drawable/ic_color"
+        app:elevation="6dp"
+        app:backgroundTint="@android:color/white"/>
 
 </android.support.design.widget.CoordinatorLayout>

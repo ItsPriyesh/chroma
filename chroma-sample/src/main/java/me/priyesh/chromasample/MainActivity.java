@@ -26,12 +26,14 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 
 import me.priyesh.chroma.ChromaDialog;
 
 public class MainActivity extends AppCompatActivity {
 
   private Toolbar mToolbar;
+  private TextView mColorTextView;
   private int mColor;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
     setSupportActionBar(mToolbar);
 
     mColor = ContextCompat.getColor(this, R.color.colorPrimary);
+
+    mColorTextView = (TextView) findViewById(R.id.text_view);
+    updateTextView(mColor);
 
     FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
     fab.setOnClickListener(new View.OnClickListener() {
@@ -57,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         .initialColor(mColor)
         .onColorSelected(new ChromaDialog.ColorSelectListener() {
           @Override public void onColorSelected(int color) {
+            updateTextView(color);
             animateToolbarColor(mColor, color);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
               getWindow().setStatusBarColor(darkenColor(color));
@@ -64,6 +70,10 @@ public class MainActivity extends AppCompatActivity {
             mColor = color;
           }
         }).show();
+  }
+
+  private void updateTextView(int color) {
+    mColorTextView.setText(String.format("#%06X", 0xFFFFFF & color));
   }
 
   private void animateToolbarColor(int start, int end) {
