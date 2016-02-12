@@ -17,14 +17,12 @@
 package me.priyesh.chroma
 
 import android.content.Context
-import android.graphics.Color
-import android.view.View
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import android.widget.SeekBar
-import android.widget.TextView
+import me.priyesh.chroma.internal.models.ColorModel
+import me.priyesh.chroma.internal.views.ChannelView
+import me.priyesh.chroma.internal.views.ColorView
 
-class ChromaView(initialColor: Int, context: Context) : LinearLayout(context) {
+class ChromaView(initialColor: Int, colorModel: ColorModel, context: Context) : LinearLayout(context) {
 
   var currentColor = initialColor
 
@@ -35,15 +33,10 @@ class ChromaView(initialColor: Int, context: Context) : LinearLayout(context) {
     val colorView = ColorView(currentColor, context)
     addView(colorView)
 
-    val channelViews = listOf(
-        ChannelView(R.string.channel_red, Color.red(currentColor), context),
-        ChannelView(R.string.channel_green, Color.green(currentColor), context),
-        ChannelView(R.string.channel_blue, Color.blue(currentColor), context)
-    )
+    val channelViews = colorModel.channels.map { ChannelView(it, currentColor, context) }
 
     val seekbarChangeListener: () -> Unit = {
-      val currentValues = channelViews.map { it.currentProgress }
-      currentColor = Color.rgb(currentValues[0], currentValues[1], currentValues[2])
+      currentColor = colorModel.evaluateColor(channelViews.map { it.channel })
       colorView.setColor(currentColor)
     }
 
@@ -55,61 +48,6 @@ class ChromaView(initialColor: Int, context: Context) : LinearLayout(context) {
       layoutParams.bottomMargin = resources.getDimensionPixelSize(R.dimen.channel_view_margin_bottom)
 
       it.registerListener(seekbarChangeListener)
-    }
-  }
-
-  private class ColorView(initialColor: Int, context: Context) : View(context) {
-    init {
-      setColor(initialColor)
-      layoutParams = LayoutParams(
-          LayoutParams.MATCH_PARENT,
-          resources.getDimensionPixelSize(R.dimen.color_view_height)
-      )
-    }
-
-    fun setColor(color: Int): Unit = setBackgroundColor(color)
-  }
-
-  private class ChannelView(
-      private val labelResourceId: Int,
-      private val initialProgress: Int,
-      context: Context) : RelativeLayout(context) {
-
-    var currentProgress = initialProgress
-    var listener: (() -> Unit)? = null
-
-    init {
-      if (initialProgress < 0 || initialProgress > 255) {
-        throw IllegalArgumentException("Initial progress must be between 0 and 255")
-      }
-
-      val rootView = inflate(context, R.layout.channel_row, this)
-      bindViews(rootView)
-    }
-
-    private fun bindViews(root: View): Unit {
-      (root.findViewById(R.id.label) as TextView).text = context.getString(labelResourceId)
-
-      val progressView = root.findViewById(R.id.progress_text) as TextView
-      progressView.text = initialProgress.toString()
-
-      val seekbar = root.findViewById(R.id.seekbar) as SeekBar
-      seekbar.progress = initialProgress
-      seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-        override fun onStartTrackingTouch(seekbar: SeekBar?) { }
-
-        override fun onStopTrackingTouch(seekbar: SeekBar?) { }
-
-        override fun onProgressChanged(seekbar: SeekBar?, progress: Int, fromUser: Boolean) {
-          currentProgress = progress
-          progressView.text = currentProgress.toString()
-          listener?.invoke()
-        }
-      })
-    }
-
-    fun registerListener(listener: () -> Unit): Unit {
-      this.listener = listener
     }
   }
 }
