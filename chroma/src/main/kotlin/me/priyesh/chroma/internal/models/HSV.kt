@@ -20,7 +20,7 @@ import android.graphics.Color
 import me.priyesh.chroma.R
 import me.priyesh.chroma.internal.models.ColorModel.Channel
 
-internal object HSV : ColorModel {
+object HSV : ColorModel {
 
   override val channels: List<Channel> = listOf(
       Channel(R.string.channel_hue, 0, 360,

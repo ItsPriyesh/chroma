@@ -19,25 +19,32 @@ package me.priyesh.chroma
 import android.content.Context
 import android.graphics.Color
 import android.support.v7.app.AlertDialog
-import me.priyesh.chroma.internal.models.HSV
+import me.priyesh.chroma.internal.models.ColorModel
 import me.priyesh.chroma.internal.models.RGB
 
 class ChromaDialog private constructor(
     context: Context,
-    initialColor: Int?,
+    initialColor: Int,
+    colorModel: ColorModel,
     listener: ColorSelectListener?) : AlertDialog(context) {
 
   companion object {
-    fun with(context: Context): Builder = ChromaDialog.Builder(context)
+    @JvmStatic fun with(context: Context): Builder = ChromaDialog.Builder(context)
   }
 
   class Builder(private val context: Context) {
 
-    private var initialColor: Int? = null
+    private var initialColor: Int = Color.GRAY
+    private var colorModel: ColorModel = RGB
     private var listener: ColorSelectListener? = null
 
     fun initialColor(initialColor: Int): Builder {
       this.initialColor = initialColor
+      return this
+    }
+
+    fun colorModel(colorModel: ColorModel): Builder {
+      this.colorModel = colorModel
       return this
     }
 
@@ -46,7 +53,7 @@ class ChromaDialog private constructor(
       return this
     }
 
-    fun show(): Unit = ChromaDialog(context, initialColor, listener).show()
+    fun show(): Unit = ChromaDialog(context, initialColor, colorModel, listener).show()
   }
 
   interface ColorSelectListener {
@@ -54,7 +61,7 @@ class ChromaDialog private constructor(
   }
 
   init {
-    val chromaView = ChromaView(initialColor ?: Color.GRAY, HSV, context)
+    val chromaView = ChromaView(initialColor, colorModel, context)
 
     setView(chromaView)
     setButton(BUTTON_NEGATIVE, context.getString(R.string.dialog_button_negative), { d, i -> })

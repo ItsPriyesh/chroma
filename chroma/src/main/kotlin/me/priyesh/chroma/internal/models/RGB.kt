@@ -20,7 +20,7 @@ import android.graphics.Color
 import me.priyesh.chroma.R
 import me.priyesh.chroma.internal.models.ColorModel.Channel
 
-internal object RGB : ColorModel {
+object RGB : ColorModel {
 
   override val channels: List<Channel> = listOf(
       Channel(R.string.channel_red, 0, 255, { color -> Color.red(color) }),
