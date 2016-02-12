@@ -25,8 +25,10 @@ internal object HSV : ColorModel {
   override val channels: List<Channel> = listOf(
       Channel(R.string.channel_hue, 0, 360,
           { color -> colorToHSV(color)[0].toInt() }),
+
       Channel(R.string.channel_saturation, 0, 100,
           { color -> (colorToHSV(color)[1] * 100).toInt() }),
+
       Channel(R.string.channel_value, 0, 100,
           { color -> (colorToHSV(color)[2] * 100).toInt() })
   )

@@ -19,6 +19,7 @@ package me.priyesh.chroma
 import android.content.Context
 import android.graphics.Color
 import android.support.v7.app.AlertDialog
+import me.priyesh.chroma.internal.models.HSV
 import me.priyesh.chroma.internal.models.RGB
 
 class ChromaDialog private constructor(
@@ -53,7 +54,7 @@ class ChromaDialog private constructor(
   }
 
   init {
-    val chromaView = ChromaView(initialColor ?: Color.GRAY, RGB, context)
+    val chromaView = ChromaView(initialColor ?: Color.GRAY, HSV, context)
 
     setView(chromaView)
     setButton(BUTTON_NEGATIVE, context.getString(R.string.dialog_button_negative), { d, i -> })

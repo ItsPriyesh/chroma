@@ -50,6 +50,7 @@ internal class ChannelView(
     progressView.text = channel.progress.toString()
 
     val seekbar = root.findViewById(R.id.seekbar) as SeekBar
+    seekbar.max = channel.max
     seekbar.progress = channel.progress
     seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
       override fun onStartTrackingTouch(seekbar: SeekBar?) { }

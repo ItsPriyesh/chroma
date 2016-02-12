@@ -57,6 +57,5 @@
         android:layout_toEndOf="@id/label"
         android:layout_toLeftOf="@id/progress_text"
         android:layout_toRightOf="@id/label"
-        android:layout_toStartOf="@id/progress_text"
-        android:max="255"/>
+        android:layout_toStartOf="@id/progress_text"/>
 </merge>
