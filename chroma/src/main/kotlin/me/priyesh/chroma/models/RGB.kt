@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package me.priyesh.chroma.internal.models
+package me.priyesh.chroma.models
 
 import android.graphics.Color
 import me.priyesh.chroma.R
-import me.priyesh.chroma.internal.models.ColorModel.Channel
+import me.priyesh.chroma.models.ColorModel.Channel
 
 object RGB : ColorModel {
 
   override val channels: List<Channel> = listOf(
-      Channel(R.string.channel_red, 0, 255, { color -> Color.red(color) }),
-      Channel(R.string.channel_green, 0, 255, { color -> Color.green(color) }),
-      Channel(R.string.channel_blue, 0, 255, { color -> Color.blue(color) })
+          Channel(R.string.channel_red, 0, 255, { color -> Color.red(color) }),
+          Channel(R.string.channel_green, 0, 255, { color -> Color.green(color) }),
+          Channel(R.string.channel_blue, 0, 255, { color -> Color.blue(color) })
   )
 
   override fun evaluateColor(channels: List<Channel>): Int =

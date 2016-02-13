@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package me.priyesh.chroma.internal.models
+package me.priyesh.chroma.models
 
 interface ColorModel {
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package me.priyesh.chroma.internal.views
+package me.priyesh.chroma.internal
 
 import android.content.Context
 import android.view.View
@@ -22,7 +22,7 @@ import android.widget.RelativeLayout
 import android.widget.SeekBar
 import android.widget.TextView
 import me.priyesh.chroma.R
-import me.priyesh.chroma.internal.models.ColorModel
+import me.priyesh.chroma.models.ColorModel
 
 internal class ChannelView(
     val channel: ColorModel.Channel,

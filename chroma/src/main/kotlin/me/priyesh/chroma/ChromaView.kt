@@ -18,9 +18,9 @@ package me.priyesh.chroma
 
 import android.content.Context
 import android.widget.LinearLayout
-import me.priyesh.chroma.internal.models.ColorModel
-import me.priyesh.chroma.internal.views.ChannelView
-import me.priyesh.chroma.internal.views.ColorView
+import me.priyesh.chroma.models.ColorModel
+import me.priyesh.chroma.internal.ChannelView
+import me.priyesh.chroma.internal.ColorView
 
 class ChromaView(initialColor: Int, colorModel: ColorModel, context: Context) : LinearLayout(context) {
 

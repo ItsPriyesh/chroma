@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-package me.priyesh.chroma.internal.models
+package me.priyesh.chroma.models
 
 import android.graphics.Color
 import me.priyesh.chroma.R
-import me.priyesh.chroma.internal.models.ColorModel.Channel
+import me.priyesh.chroma.models.ColorModel.Channel
 
 object HSV : ColorModel {
 
   override val channels: List<Channel> = listOf(
-      Channel(R.string.channel_hue, 0, 360,
-          { color -> colorToHSV(color)[0].toInt() }),
+          Channel(R.string.channel_hue, 0, 360,
+                  { color -> colorToHSV(color)[0].toInt() }),
 
-      Channel(R.string.channel_saturation, 0, 100,
-          { color -> (colorToHSV(color)[1] * 100).toInt() }),
+          Channel(R.string.channel_saturation, 0, 100,
+                  { color -> (colorToHSV(color)[1] * 100).toInt() }),
 
-      Channel(R.string.channel_value, 0, 100,
-          { color -> (colorToHSV(color)[2] * 100).toInt() })
+          Channel(R.string.channel_value, 0, 100,
+                  { color -> (colorToHSV(color)[2] * 100).toInt() })
   )
 
   override fun evaluateColor(channels: List<Channel>): Int =

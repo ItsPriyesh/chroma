@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package me.priyesh.chroma.internal.views;
+package me.priyesh.chroma.internal;
 
 import android.content.Context
 import android.view.View
@@ -25,8 +25,8 @@ internal class ColorView(initialColor: Int, context: Context) : View(context) {
   init {
     setColor(initialColor)
     layoutParams = LinearLayout.LayoutParams(
-        LinearLayout.LayoutParams.MATCH_PARENT,
-        resources.getDimensionPixelSize(R.dimen.color_view_height)
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            resources.getDimensionPixelSize(R.dimen.color_view_height)
     )
   }
 
