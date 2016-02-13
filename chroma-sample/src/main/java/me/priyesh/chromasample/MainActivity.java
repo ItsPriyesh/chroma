@@ -29,7 +29,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import me.priyesh.chroma.ChromaDialog;
-import me.priyesh.chroma.internal.models.RGB;
+import me.priyesh.chroma.models.RGB;
 
 public class MainActivity extends AppCompatActivity {
 
