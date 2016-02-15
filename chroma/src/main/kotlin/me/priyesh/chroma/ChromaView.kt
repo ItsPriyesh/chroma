@@ -33,6 +33,8 @@ class ChromaView : LinearLayout {
   var currentColor: Int
   val colorModel: ColorModel
 
+  constructor(context: Context) : this(DefaultColor, DefaultModel, context)
+
   constructor(initialColor: Int, colorModel: ColorModel, context: Context) : super(context) {
     this.currentColor = initialColor
     this.colorModel = colorModel
