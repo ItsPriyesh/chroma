@@ -25,10 +25,17 @@ import me.priyesh.chroma.internal.ColorView
 
 class ChromaView : LinearLayout {
 
+  companion object {
+    val DefaultColor = Color.GRAY
+    val DefaultModel = ColorModel.RGB
+  }
+
   var currentColor: Int
   val colorModel: ColorModel
 
-  constructor(initialColor: Int, colorModel: ColorModel, context: Context) : super(context) {
+  constructor(initialColor: Int = DefaultColor,
+              colorModel: ColorModel = DefaultModel,
+              context: Context) : super(context) {
     this.currentColor = initialColor
     this.colorModel = colorModel
     init()
@@ -38,10 +45,8 @@ class ChromaView : LinearLayout {
     val typedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.ChromaView, 0, 0)
 
     try {
-      this.currentColor = typedArray.getColor(R.styleable.ChromaView_initialColor, Color.GRAY)
-      this.colorModel = ColorModel.valueOf(
-          typedArray.getString(R.styleable.ChromaView_colorMode)
-              ?: ColorModel.RGB.toString())
+      this.currentColor = typedArray.getColor(R.styleable.ChromaView_initialColor, DefaultColor)
+      this.colorModel = ColorModel.fromID(typedArray.getInteger(R.styleable.ChromaView_colorMode, 0))
     } finally {
       typedArray.recycle()
     }

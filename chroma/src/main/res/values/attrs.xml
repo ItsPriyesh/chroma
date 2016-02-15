@@ -19,8 +19,8 @@
     <declare-styleable name="ChromaView">
         <attr name="initialColor" format="color" />
         <attr name="colorMode" format="enum">
-            <enum name="rgb" value="RGB"/>
-            <enum name="hsv" value="HSV"/>
+            <enum name="rgb" value="0"/>
+            <enum name="hsv" value="1"/>
         </attr>
     </declare-styleable>
 </resources>

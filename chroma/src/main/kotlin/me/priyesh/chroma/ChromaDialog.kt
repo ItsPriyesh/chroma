@@ -17,14 +17,12 @@
 package me.priyesh.chroma
 
 import android.content.Context
-import android.graphics.Color
 import android.support.v7.app.AlertDialog
-import me.priyesh.chroma.ColorModel
 
 class ChromaDialog private constructor(
     context: Context,
-    initialColor: Int,
-    colorModel: ColorModel,
+    initialColor: Int?,
+    colorModel: ColorModel?,
     listener: ColorSelectListener?) : AlertDialog(context) {
 
   companion object {
@@ -33,8 +31,8 @@ class ChromaDialog private constructor(
 
   class Builder(private val context: Context) {
 
-    private var initialColor: Int = Color.GRAY
-    private var colorModel: ColorModel = RGB
+    private var initialColor: Int? = null
+    private var colorModel: ColorModel? = null
     private var listener: ColorSelectListener? = null
 
     fun initialColor(initialColor: Int): Builder {
@@ -60,7 +58,10 @@ class ChromaDialog private constructor(
   }
 
   init {
-    val chromaView = ChromaView(initialColor, colorModel, context)
+    val chromaView = ChromaView(
+        initialColor ?: ChromaView.DefaultColor,
+        colorModel ?: ChromaView.DefaultModel,
+        context)
 
     setView(chromaView)
     setButton(BUTTON_NEGATIVE, context.getString(R.string.dialog_button_negative), { d, i -> })

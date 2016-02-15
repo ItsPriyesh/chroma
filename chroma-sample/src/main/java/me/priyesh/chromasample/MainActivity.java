@@ -29,6 +29,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import me.priyesh.chroma.ChromaDialog;
+import me.priyesh.chroma.ColorModel;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
   private void showColorPickerDialog() {
     ChromaDialog.with(this)
         .initialColor(mColor)
-        .colorModel(RGB.INSTANCE)
+        .colorModel(ColorModel.RGB)
         .onColorSelected(new ChromaDialog.ColorSelectListener() {
           @Override public void onColorSelected(int color) {
             updateTextView(color);

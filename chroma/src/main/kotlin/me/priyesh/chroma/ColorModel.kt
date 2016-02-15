@@ -18,9 +18,9 @@ package me.priyesh.chroma
 
 import android.graphics.Color
 
-enum class ColorModel {
+enum class ColorModel(private val ID: Int) {
 
-  RGB {
+  RGB(ID = 0) {
     override val channels: List<Channel> = listOf(
         Channel(R.string.channel_red, 0, 255,
             { color -> Color.red(color) }),
@@ -36,7 +36,7 @@ enum class ColorModel {
         Color.rgb(channels[0].progress, channels[1].progress, channels[2].progress)
   },
 
-  HSV {
+  HSV(ID = 1) {
     override val channels: List<Channel> = listOf(
         Channel(R.string.channel_hue, 0, 360,
             { color -> colorToHSV(color)[0].toInt() }),
@@ -70,4 +70,11 @@ enum class ColorModel {
                      val min: Int, val max: Int,
                      val extractor: (color: Int) -> Int,
                      var progress: Int = 0)
+
+  companion object{
+    fun fromID(id: Int): ColorModel {
+      for (model in values()) if (model.ID == id) return model
+      return ColorModel.RGB
+    }
+  }
 }
