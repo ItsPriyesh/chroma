@@ -19,8 +19,7 @@ package me.priyesh.chroma
 import android.content.Context
 import android.graphics.Color
 import android.support.v7.app.AlertDialog
-import me.priyesh.chroma.models.ColorModel
-import me.priyesh.chroma.models.RGB
+import me.priyesh.chroma.ColorModel
 
 class ChromaDialog private constructor(
     context: Context,

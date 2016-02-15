@@ -17,16 +17,39 @@
 package me.priyesh.chroma
 
 import android.content.Context
+import android.graphics.Color
+import android.util.AttributeSet
 import android.widget.LinearLayout
-import me.priyesh.chroma.models.ColorModel
 import me.priyesh.chroma.internal.ChannelView
 import me.priyesh.chroma.internal.ColorView
 
-class ChromaView(initialColor: Int, colorModel: ColorModel, context: Context) : LinearLayout(context) {
+class ChromaView : LinearLayout {
 
-  var currentColor = initialColor
+  var currentColor: Int
+  val colorModel: ColorModel
 
-  init {
+  constructor(initialColor: Int, colorModel: ColorModel, context: Context) : super(context) {
+    this.currentColor = initialColor
+    this.colorModel = colorModel
+    init()
+  }
+
+  constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
+    val typedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.ChromaView, 0, 0)
+
+    try {
+      this.currentColor = typedArray.getColor(R.styleable.ChromaView_initialColor, Color.GRAY)
+      this.colorModel = ColorModel.valueOf(
+          typedArray.getString(R.styleable.ChromaView_colorMode)
+              ?: ColorModel.RGB.toString())
+    } finally {
+      typedArray.recycle()
+    }
+
+    init()
+  }
+
+  private fun init() {
     orientation = VERTICAL
     clipToPadding = false
 
