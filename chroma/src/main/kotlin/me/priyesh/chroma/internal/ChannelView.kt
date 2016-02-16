@@ -29,7 +29,7 @@ internal class ChannelView(
     color: Int,
     context: Context) : RelativeLayout(context) {
 
-  var listener: (() -> Unit)? = null
+  internal var listener: (() -> Unit)? = null
 
   init {
     channel.progress = channel.extractor.invoke(color)

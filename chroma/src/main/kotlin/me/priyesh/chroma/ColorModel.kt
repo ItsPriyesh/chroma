@@ -62,16 +62,16 @@ enum class ColorModel(internal val ID: Int) {
     }
   };
 
-  abstract val channels: List<Channel>
+  abstract internal val channels: List<Channel>
 
-  abstract fun evaluateColor(channels: List<Channel>): Int
+  abstract internal fun evaluateColor(channels: List<Channel>): Int
 
-  data class Channel(val nameResourceId: Int,
+  internal data class Channel(val nameResourceId: Int,
                      val min: Int, val max: Int,
                      val extractor: (color: Int) -> Int,
                      var progress: Int = 0)
 
-  companion object {
+  internal companion object {
     fun fromID(id: Int): ColorModel {
       for (model in values()) if (model.ID == id) return model
       return ColorModel.RGB
