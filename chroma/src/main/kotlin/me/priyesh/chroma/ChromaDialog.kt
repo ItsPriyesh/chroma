@@ -23,7 +23,7 @@ class ChromaDialog private constructor(
     context: Context,
     initialColor: Int?,
     colorModel: ColorModel?,
-    listener: ColorSelectListener?) : AlertDialog(context) {
+    var listener: ColorSelectListener?) : AlertDialog(context) {
 
   companion object {
     @JvmStatic fun with(context: Context): Builder = ChromaDialog.Builder(context)
@@ -68,5 +68,10 @@ class ChromaDialog private constructor(
     setButton(BUTTON_POSITIVE, context.getString(R.string.dialog_button_positive), { d, i ->
       listener?.onColorSelected(chromaView.currentColor)
     })
+  }
+
+  override fun onStop() {
+    super.onStop()
+    listener = null
   }
 }

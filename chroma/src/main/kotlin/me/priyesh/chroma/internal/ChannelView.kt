@@ -68,4 +68,9 @@ internal class ChannelView(
   fun registerListener(listener: () -> Unit): Unit {
     this.listener = listener
   }
+
+  override fun onDetachedFromWindow() {
+    super.onDetachedFromWindow()
+    this.listener = null
+  }
 }
