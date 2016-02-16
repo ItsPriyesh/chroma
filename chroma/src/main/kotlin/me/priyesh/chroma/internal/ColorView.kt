@@ -17,11 +17,12 @@
 package me.priyesh.chroma.internal;
 
 import android.content.Context
+import android.support.annotation.ColorInt
 import android.view.View
 import android.widget.LinearLayout
 import me.priyesh.chroma.R
 
-internal class ColorView(initialColor: Int, context: Context) : View(context) {
+internal class ColorView(@ColorInt initialColor: Int, context: Context) : View(context) {
   init {
     setColor(initialColor)
     layoutParams = LinearLayout.LayoutParams(
@@ -30,5 +31,5 @@ internal class ColorView(initialColor: Int, context: Context) : View(context) {
     )
   }
 
-  fun setColor(color: Int): Unit = setBackgroundColor(color)
+  fun setColor(@ColorInt color: Int): Unit = setBackgroundColor(color)
 }

@@ -17,11 +17,12 @@
 package me.priyesh.chroma
 
 import android.content.Context
+import android.support.annotation.ColorInt
 import android.support.v7.app.AlertDialog
 
 class ChromaDialog private constructor(
     context: Context,
-    initialColor: Int?,
+    @ColorInt initialColor: Int?,
     colorMode: ColorMode?,
     private var listener: ColorSelectListener?) : AlertDialog(context) {
 
@@ -31,11 +32,11 @@ class ChromaDialog private constructor(
 
   class Builder internal constructor(private val context: Context) {
 
-    private var initialColor: Int? = null
+    @ColorInt private var initialColor: Int? = null
     private var colorMode: ColorMode? = null
     private var listener: ColorSelectListener? = null
 
-    fun initialColor(initialColor: Int): Builder {
+    fun initialColor(@ColorInt initialColor: Int): Builder {
       this.initialColor = initialColor
       return this
     }
@@ -54,7 +55,7 @@ class ChromaDialog private constructor(
   }
 
   interface ColorSelectListener {
-    fun onColorSelected(color: Int)
+    fun onColorSelected(@ColorInt color: Int)
   }
 
   init {

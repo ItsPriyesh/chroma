@@ -18,6 +18,7 @@ package me.priyesh.chroma
 
 import android.content.Context
 import android.graphics.Color
+import android.support.annotation.ColorInt
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import me.priyesh.chroma.internal.ChannelView
@@ -30,12 +31,12 @@ class ChromaView : LinearLayout {
     val DefaultModel = ColorMode.RGB
   }
 
-  var currentColor: Int
+  @ColorInt var currentColor: Int
   val colorMode: ColorMode
 
   constructor(context: Context) : this(DefaultColor, DefaultModel, context)
 
-  constructor(initialColor: Int, colorMode: ColorMode, context: Context) : super(context) {
+  constructor(@ColorInt initialColor: Int, colorMode: ColorMode, context: Context) : super(context) {
     this.currentColor = initialColor
     this.colorMode = colorMode
     init()

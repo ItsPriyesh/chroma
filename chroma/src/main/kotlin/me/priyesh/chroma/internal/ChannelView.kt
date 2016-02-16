@@ -17,6 +17,7 @@
 package me.priyesh.chroma.internal
 
 import android.content.Context
+import android.support.annotation.ColorInt
 import android.view.View
 import android.widget.RelativeLayout
 import android.widget.SeekBar
@@ -26,7 +27,7 @@ import me.priyesh.chroma.ColorMode
 
 internal class ChannelView(
     val channel: ColorMode.Channel,
-    color: Int,
+    @ColorInt color: Int,
     context: Context) : RelativeLayout(context) {
 
   internal var listener: (() -> Unit)? = null
