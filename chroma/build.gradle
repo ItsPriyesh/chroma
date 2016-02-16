@@ -1,6 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
+def VersionName = '1.0.0'
+
 ext {
     bintrayRepo = 'maven'
     bintrayName = 'chroma'
@@ -14,7 +16,7 @@ ext {
     siteUrl = 'https://github.com/ItsPriyesh/chroma'
     gitUrl = 'https://github.com/ItsPriyesh/chroma.git'
 
-    libraryVersion = android.defaultConfig.versionName
+    libraryVersion = VersionName
 
     developerId = 'ItsPriyesh'
     developerName = 'Priyesh Patel'
@@ -33,7 +35,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0"
+        versionName VersionName
     }
     buildTypes {
         release {
