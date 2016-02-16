@@ -27,17 +27,17 @@ class ChromaView : LinearLayout {
 
   companion object {
     val DefaultColor = Color.GRAY
-    val DefaultModel = ColorModel.RGB
+    val DefaultModel = ColorMode.RGB
   }
 
   var currentColor: Int
-  val colorModel: ColorModel
+  val colorMode: ColorMode
 
   constructor(context: Context) : this(DefaultColor, DefaultModel, context)
 
-  constructor(initialColor: Int, colorModel: ColorModel, context: Context) : super(context) {
+  constructor(initialColor: Int, colorMode: ColorMode, context: Context) : super(context) {
     this.currentColor = initialColor
-    this.colorModel = colorModel
+    this.colorMode = colorMode
     init()
   }
 
@@ -46,7 +46,7 @@ class ChromaView : LinearLayout {
 
     try {
       this.currentColor = typedArray.getColor(R.styleable.ChromaView_initialColor, DefaultColor)
-      this.colorModel = ColorModel.fromID(
+      this.colorMode = ColorMode.fromID(
           typedArray.getInteger(R.styleable.ChromaView_colorMode, DefaultModel.ID))
     } finally {
       typedArray.recycle()
@@ -62,10 +62,10 @@ class ChromaView : LinearLayout {
     val colorView = ColorView(currentColor, context)
     addView(colorView)
 
-    val channelViews = colorModel.channels.map { ChannelView(it, currentColor, context) }
+    val channelViews = colorMode.channels.map { ChannelView(it, currentColor, context) }
 
     val seekbarChangeListener: () -> Unit = {
-      currentColor = colorModel.evaluateColor(channelViews.map { it.channel })
+      currentColor = colorMode.evaluateColor(channelViews.map { it.channel })
       colorView.setColor(currentColor)
     }
 

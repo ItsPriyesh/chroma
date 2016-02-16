@@ -18,7 +18,7 @@ package me.priyesh.chroma
 
 import android.graphics.Color
 
-enum class ColorModel(internal val ID: Int) {
+enum class ColorMode(internal val ID: Int) {
 
   RGB(ID = 0) {
     override val channels: List<Channel> = listOf(
@@ -72,9 +72,9 @@ enum class ColorModel(internal val ID: Int) {
                      var progress: Int = 0)
 
   internal companion object {
-    fun fromID(id: Int): ColorModel {
+    fun fromID(id: Int): ColorMode {
       for (model in values()) if (model.ID == id) return model
-      return ColorModel.RGB
+      return ColorMode.RGB
     }
   }
 }

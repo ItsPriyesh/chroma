@@ -22,10 +22,10 @@ import android.widget.RelativeLayout
 import android.widget.SeekBar
 import android.widget.TextView
 import me.priyesh.chroma.R
-import me.priyesh.chroma.ColorModel
+import me.priyesh.chroma.ColorMode
 
 internal class ChannelView(
-    val channel: ColorModel.Channel,
+    val channel: ColorMode.Channel,
     color: Int,
     context: Context) : RelativeLayout(context) {
 

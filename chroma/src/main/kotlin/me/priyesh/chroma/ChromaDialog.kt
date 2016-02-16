@@ -22,7 +22,7 @@ import android.support.v7.app.AlertDialog
 class ChromaDialog private constructor(
     context: Context,
     initialColor: Int?,
-    colorModel: ColorModel?,
+    colorMode: ColorMode?,
     var listener: ColorSelectListener?) : AlertDialog(context) {
 
   companion object {
@@ -32,7 +32,7 @@ class ChromaDialog private constructor(
   class Builder(private val context: Context) {
 
     private var initialColor: Int? = null
-    private var colorModel: ColorModel? = null
+    private var colorMode: ColorMode? = null
     private var listener: ColorSelectListener? = null
 
     fun initialColor(initialColor: Int): Builder {
@@ -40,8 +40,8 @@ class ChromaDialog private constructor(
       return this
     }
 
-    fun colorModel(colorModel: ColorModel): Builder {
-      this.colorModel = colorModel
+    fun colorMode(colorMode: ColorMode): Builder {
+      this.colorMode = colorMode
       return this
     }
 
@@ -50,7 +50,7 @@ class ChromaDialog private constructor(
       return this
     }
 
-    fun show(): Unit = ChromaDialog(context, initialColor, colorModel, listener).show()
+    fun show(): Unit = ChromaDialog(context, initialColor, colorMode, listener).show()
   }
 
   interface ColorSelectListener {
@@ -60,7 +60,7 @@ class ChromaDialog private constructor(
   init {
     val chromaView = ChromaView(
         initialColor ?: ChromaView.DefaultColor,
-        colorModel ?: ChromaView.DefaultModel,
+        colorMode ?: ChromaView.DefaultModel,
         context)
 
     setView(chromaView)
