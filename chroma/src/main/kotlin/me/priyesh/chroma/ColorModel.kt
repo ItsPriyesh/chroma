@@ -71,7 +71,7 @@ enum class ColorModel(internal val ID: Int) {
                      val extractor: (color: Int) -> Int,
                      var progress: Int = 0)
 
-  companion object{
+  companion object {
     fun fromID(id: Int): ColorModel {
       for (model in values()) if (model.ID == id) return model
       return ColorModel.RGB
