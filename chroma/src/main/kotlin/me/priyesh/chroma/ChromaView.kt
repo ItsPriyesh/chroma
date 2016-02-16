@@ -31,7 +31,8 @@ class ChromaView : LinearLayout {
     val DefaultModel = ColorMode.RGB
   }
 
-  @ColorInt var currentColor: Int
+  @ColorInt var currentColor: Int private set
+
   val colorMode: ColorMode
 
   constructor(context: Context) : this(DefaultColor, DefaultModel, context)
