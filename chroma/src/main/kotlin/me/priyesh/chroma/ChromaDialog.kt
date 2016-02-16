@@ -23,13 +23,13 @@ class ChromaDialog private constructor(
     context: Context,
     initialColor: Int?,
     colorMode: ColorMode?,
-    var listener: ColorSelectListener?) : AlertDialog(context) {
+    private var listener: ColorSelectListener?) : AlertDialog(context) {
 
   companion object {
     @JvmStatic fun with(context: Context): Builder = ChromaDialog.Builder(context)
   }
 
-  class Builder(private val context: Context) {
+  class Builder internal constructor(private val context: Context) {
 
     private var initialColor: Int? = null
     private var colorMode: ColorMode? = null
