@@ -18,7 +18,7 @@ package me.priyesh.chroma
 
 import android.graphics.Color
 
-enum class ColorModel(private val ID: Int) {
+enum class ColorModel(internal val ID: Int) {
 
   RGB(ID = 0) {
     override val channels: List<Channel> = listOf(

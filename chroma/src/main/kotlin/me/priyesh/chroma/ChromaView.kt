@@ -46,7 +46,8 @@ class ChromaView : LinearLayout {
 
     try {
       this.currentColor = typedArray.getColor(R.styleable.ChromaView_initialColor, DefaultColor)
-      this.colorModel = ColorModel.fromID(typedArray.getInteger(R.styleable.ChromaView_colorMode, 0))
+      this.colorModel = ColorModel.fromID(
+          typedArray.getInteger(R.styleable.ChromaView_colorMode, DefaultModel.ID))
     } finally {
       typedArray.recycle()
     }
