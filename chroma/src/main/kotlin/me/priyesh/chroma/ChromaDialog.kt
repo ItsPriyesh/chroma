@@ -51,7 +51,7 @@ class ChromaDialog private constructor(
       return this
     }
 
-    fun show(): Unit = ChromaDialog(context, initialColor, colorMode, listener).show()
+    fun create() = ChromaDialog(context, initialColor, colorMode, listener)
   }
 
   interface ColorSelectListener {

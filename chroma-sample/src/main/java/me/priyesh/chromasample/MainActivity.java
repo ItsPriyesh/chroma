@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
             }
             mColor = color;
           }
-        }).show();
+        }).create().show();
   }
 
   private void updateTextView(int color) {
