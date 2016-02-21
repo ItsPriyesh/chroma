@@ -19,6 +19,7 @@ package me.priyesh.chroma
 import android.content.Context
 import android.support.annotation.ColorInt
 import android.support.v7.app.AlertDialog
+import android.view.WindowManager
 
 class ChromaDialog private constructor(
     context: Context,
@@ -69,6 +70,12 @@ class ChromaDialog private constructor(
     setButton(BUTTON_POSITIVE, context.getString(R.string.dialog_button_positive), { d, i ->
       listener?.onColorSelected(chromaView.currentColor)
     })
+
+    setOnShowListener {
+      window.setLayout(
+          context.resources.getDimensionPixelSize(R.dimen.chroma_dialog_width),
+          WindowManager.LayoutParams.WRAP_CONTENT)
+    }
   }
 
   override fun onStop() {
