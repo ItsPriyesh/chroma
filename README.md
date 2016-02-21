@@ -14,8 +14,9 @@ To display an RGB color picker dialog:
 ``` java
 ChromaDialog.with(this)
     .initialColor(Color.RED)
+    .colorMode(ColorMode.RGB)
     .onColorSelected(color -> /* do your stuff */)
-    .show();
+    .create().show();
 ```
 
 See the sample project for more details.
