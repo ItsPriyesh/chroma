@@ -2,6 +2,9 @@ chroma
 ======
 A Material color picker view for Android written in Kotlin.
 
+<img src="https://raw.githubusercontent.com/ItsPriyesh/chroma/master/art/red.png" width="250">
+<img src="https://raw.githubusercontent.com/ItsPriyesh/chroma/master/art/green.png" width="250">
+<img src="https://raw.githubusercontent.com/ItsPriyesh/chroma/master/art/blue.png" width="250">
 
 Download
 --------
