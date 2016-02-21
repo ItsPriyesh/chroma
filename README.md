@@ -8,7 +8,10 @@ A Material color picker view for Android written in Kotlin.
 
 Download
 --------
-
+Add the following dependency to your projects `build.gradle`:
+``` groovy
+compile 'me.priyesh:chroma:1.0.0'
+```
 
 Usage
 -----
