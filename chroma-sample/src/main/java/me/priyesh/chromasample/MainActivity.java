@@ -30,6 +30,7 @@ import android.widget.TextView;
 
 import me.priyesh.chroma.ChromaDialog;
 import me.priyesh.chroma.ColorMode;
+import me.priyesh.chroma.ColorSelectListener;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,10 +59,10 @@ public class MainActivity extends AppCompatActivity {
   }
 
   private void showColorPickerDialog() {
-    ChromaDialog.with(this)
+    new ChromaDialog.Builder()
         .initialColor(mColor)
         .colorMode(ColorMode.RGB)
-        .onColorSelected(new ChromaDialog.ColorSelectListener() {
+        .onColorSelected(new ColorSelectListener() {
           @Override public void onColorSelected(int color) {
             updateTextView(color);
             animateToolbarColor(mColor, color);
@@ -70,7 +71,8 @@ public class MainActivity extends AppCompatActivity {
             }
             mColor = color;
           }
-        }).create().show();
+        }).create()
+        .show(getSupportFragmentManager(), "dialog");
   }
 
   private void updateTextView(int color) {

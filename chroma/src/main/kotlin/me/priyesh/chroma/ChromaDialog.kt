@@ -16,25 +16,34 @@
 
 package me.priyesh.chroma
 
-import android.content.Context
+import android.app.Dialog
+import android.os.Bundle
 import android.support.annotation.ColorInt
+import android.support.v4.app.DialogFragment
 import android.support.v7.app.AlertDialog
 import android.view.WindowManager
 
-class ChromaDialog private constructor(
-    context: Context,
-    @ColorInt initialColor: Int?,
-    colorMode: ColorMode?,
-    private var listener: ColorSelectListener?) : AlertDialog(context) {
+class ChromaDialog constructor() : DialogFragment() {
 
   companion object {
-    @JvmStatic fun with(context: Context): Builder = ChromaDialog.Builder(context)
+    private val ArgInitialColor = "arg_initial_color"
+    private val ArgColorModeId = "arg_color_mode_id"
+
+    @JvmStatic
+    private fun newInstance(@ColorInt initialColor: Int, colorMode: ColorMode): ChromaDialog {
+      val args = Bundle()
+      args.putInt(ArgInitialColor, initialColor)
+      args.putInt(ArgColorModeId, colorMode.ID)
+
+      val fragment = ChromaDialog()
+      fragment.arguments = args
+      return fragment
+    }
   }
 
-  class Builder internal constructor(private val context: Context) {
-
-    @ColorInt private var initialColor: Int? = null
-    private var colorMode: ColorMode? = null
+  class Builder {
+    @ColorInt private var initialColor: Int = ChromaView.DefaultColor
+    private var colorMode: ColorMode = ChromaView.DefaultModel
     private var listener: ColorSelectListener? = null
 
     fun initialColor(@ColorInt initialColor: Int): Builder {
@@ -52,34 +61,38 @@ class ChromaDialog private constructor(
       return this
     }
 
-    fun create() = ChromaDialog(context, initialColor, colorMode, listener)
-  }
-
-  interface ColorSelectListener {
-    fun onColorSelected(@ColorInt color: Int)
-  }
-
-  init {
-    val chromaView = ChromaView(
-        initialColor ?: ChromaView.DefaultColor,
-        colorMode ?: ChromaView.DefaultModel,
-        context)
-
-    setView(chromaView)
-    setButton(BUTTON_NEGATIVE, context.getString(R.string.dialog_button_negative), { d, i -> })
-    setButton(BUTTON_POSITIVE, context.getString(R.string.dialog_button_positive), { d, i ->
-      listener?.onColorSelected(chromaView.currentColor)
-    })
-
-    setOnShowListener {
-      window.setLayout(
-          context.resources.getDimensionPixelSize(R.dimen.chroma_dialog_width),
-          WindowManager.LayoutParams.WRAP_CONTENT)
+    fun create(): ChromaDialog {
+      val fragment = newInstance(initialColor, colorMode)
+      fragment.listener = listener
+      return fragment
     }
   }
 
-  override fun onStop() {
-    super.onStop()
+  private var listener: ColorSelectListener? = null
+
+  override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+    val chromaView = ChromaView(
+        arguments.getInt(ArgInitialColor),
+        ColorMode.fromID(arguments.getInt(ArgColorModeId)),
+        context)
+
+    val dialog = AlertDialog.Builder(context).setView(chromaView)
+        .setNegativeButton(R.string.dialog_button_negative, null)
+        .setPositiveButton(R.string.dialog_button_positive, { dialog, which ->
+          listener?.onColorSelected(chromaView.currentColor)
+        }).create()
+
+    dialog.setOnShowListener {
+      dialog.window.setLayout(
+          context.resources.getDimensionPixelSize(R.dimen.chroma_dialog_width),
+          WindowManager.LayoutParams.WRAP_CONTENT)
+    }
+
+    return dialog
+  }
+
+  override fun onDestroyView() {
+    super.onDestroyView()
     listener = null
   }
 }
