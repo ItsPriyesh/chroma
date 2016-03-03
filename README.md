@@ -15,14 +15,14 @@ compile 'me.priyesh:chroma:1.0.0'
 
 Usage
 -----
-To display an RGB color picker dialog:
+To display an RGB color picker `DialogFragment`:
 
 ``` java
-ChromaDialog.with(this)
-    .initialColor(Color.RED)
-    .colorMode(ColorMode.RGB)
+new ChromaDialog.Builder()
+    .initialColor(Color.GREEN)
     .onColorSelected(color -> /* do your stuff */)
-    .create().show();
+    .create()
+    .show(getFragmentManager(), "ChromaDialog");
 ```
 
 Don't want a dialog? Use `ChromaView` directly:
