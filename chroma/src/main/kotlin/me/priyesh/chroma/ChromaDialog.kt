@@ -23,6 +23,7 @@ import android.os.Bundle
 import android.support.annotation.ColorInt
 import android.support.v4.app.DialogFragment
 import android.view.WindowManager
+import kotlin.properties.Delegates
 
 class ChromaDialog constructor() : DialogFragment() {
 
@@ -32,13 +33,17 @@ class ChromaDialog constructor() : DialogFragment() {
 
     @JvmStatic
     private fun newInstance(@ColorInt initialColor: Int, colorMode: ColorMode): ChromaDialog {
+      val fragment = ChromaDialog()
+      fragment.arguments = makeArgs(initialColor, colorMode)
+      return fragment
+    }
+
+    @JvmStatic
+    private fun makeArgs(@ColorInt initialColor: Int, colorMode: ColorMode): Bundle {
       val args = Bundle()
       args.putInt(ArgInitialColor, initialColor)
       args.putInt(ArgColorModeId, colorMode.ID)
-
-      val fragment = ChromaDialog()
-      fragment.arguments = args
-      return fragment
+      return args
     }
   }
 
@@ -70,12 +75,21 @@ class ChromaDialog constructor() : DialogFragment() {
   }
 
   private var listener: ColorSelectListener? = null
+  private var chromaView: ChromaView by Delegates.notNull<ChromaView>()
 
   override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-    val chromaView = ChromaView(
-        arguments.getInt(ArgInitialColor),
-        ColorMode.fromID(arguments.getInt(ArgColorModeId)),
-        context)
+    chromaView = if (savedInstanceState == null) {
+      ChromaView(
+          arguments.getInt(ArgInitialColor),
+          ColorMode.fromID(arguments.getInt(ArgColorModeId)),
+          context)
+    } else {
+      ChromaView(
+          savedInstanceState.getInt(ArgInitialColor, ChromaView.DefaultColor),
+          ColorMode.fromID(savedInstanceState.getInt(ArgColorModeId, ChromaView.DefaultModel.ID)),
+          context
+      )
+    }
 
     chromaView.enableButtonBar(object : ChromaView.ButtonBarListener {
       override fun onNegativeButtonClick() = dismiss()
@@ -98,6 +112,11 @@ class ChromaDialog constructor() : DialogFragment() {
         window.setLayout(width, height)
       }
     }
+  }
+
+  override fun onSaveInstanceState(outState: Bundle?) {
+    outState?.putAll(makeArgs(chromaView.currentColor, chromaView.colorMode))
+    super.onSaveInstanceState(outState)
   }
 
   override fun onDestroyView() {
