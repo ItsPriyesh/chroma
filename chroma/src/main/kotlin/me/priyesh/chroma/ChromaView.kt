@@ -20,11 +20,12 @@ import android.content.Context
 import android.graphics.Color
 import android.support.annotation.ColorInt
 import android.util.AttributeSet
+import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import me.priyesh.chroma.internal.ChannelView
-import me.priyesh.chroma.internal.ColorView
 
-class ChromaView : LinearLayout {
+class ChromaView : RelativeLayout {
 
   companion object {
     val DefaultColor = Color.GRAY
@@ -57,28 +58,51 @@ class ChromaView : LinearLayout {
     init()
   }
 
-  private fun init() {
-    orientation = VERTICAL
+  private fun init(): Unit {
+    inflate(context, R.layout.chroma_view, this)
     clipToPadding = false
 
-    val colorView = ColorView(currentColor, context)
-    addView(colorView)
+    val colorView = findViewById(R.id.color_view)
+    colorView.setBackgroundColor(currentColor)
 
     val channelViews = colorMode.channels.map { ChannelView(it, currentColor, context) }
 
     val seekbarChangeListener: () -> Unit = {
       currentColor = colorMode.evaluateColor(channelViews.map { it.channel })
-      colorView.setColor(currentColor)
+      colorView.setBackgroundColor(currentColor)
     }
 
+    val channelContainer = findViewById(R.id.channel_container) as ViewGroup
     channelViews.forEach { it ->
-      addView(it)
+      channelContainer.addView(it)
 
       val layoutParams = it.layoutParams as LinearLayout.LayoutParams
       layoutParams.topMargin = resources.getDimensionPixelSize(R.dimen.channel_view_margin_top)
       layoutParams.bottomMargin = resources.getDimensionPixelSize(R.dimen.channel_view_margin_bottom)
 
       it.registerListener(seekbarChangeListener)
+    }
+  }
+
+  internal interface ButtonBarListener {
+    fun onPositiveButtonClick(color: Int)
+    fun onNegativeButtonClick()
+  }
+
+  internal fun enableButtonBar(listener: ButtonBarListener?): Unit {
+    with(findViewById(R.id.button_bar)) {
+      val positiveButton = findViewById(R.id.positive_button)
+      val negativeButton = findViewById(R.id.negative_button)
+
+      if (listener != null) {
+        visibility = VISIBLE
+        positiveButton.setOnClickListener { listener.onPositiveButtonClick(currentColor) }
+        negativeButton.setOnClickListener { listener.onNegativeButtonClick() }
+      } else {
+        visibility = GONE
+        positiveButton.setOnClickListener(null)
+        negativeButton.setOnClickListener(null)
+      }
     }
   }
 }

@@ -16,11 +16,12 @@
 
 package me.priyesh.chroma
 
+import android.app.AlertDialog
 import android.app.Dialog
+import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.os.Bundle
 import android.support.annotation.ColorInt
 import android.support.v4.app.DialogFragment
-import android.support.v7.app.AlertDialog
 import android.view.WindowManager
 
 class ChromaDialog constructor() : DialogFragment() {
@@ -76,19 +77,27 @@ class ChromaDialog constructor() : DialogFragment() {
         ColorMode.fromID(arguments.getInt(ArgColorModeId)),
         context)
 
-    val dialog = AlertDialog.Builder(context).setView(chromaView)
-        .setNegativeButton(R.string.dialog_button_negative, null)
-        .setPositiveButton(R.string.dialog_button_positive, { dialog, which ->
-          listener?.onColorSelected(chromaView.currentColor)
-        }).create()
+    chromaView.enableButtonBar(object : ChromaView.ButtonBarListener {
+      override fun onNegativeButtonClick() = dismiss()
+      override fun onPositiveButtonClick(color: Int) {
+        listener?.onColorSelected(color)
+        dismiss()
+      }
+    })
 
-    dialog.setOnShowListener {
-      dialog.window.setLayout(
-          context.resources.getDimensionPixelSize(R.dimen.chroma_dialog_width),
-          WindowManager.LayoutParams.WRAP_CONTENT)
+    return AlertDialog.Builder(context).setView(chromaView).create().apply {
+      setOnShowListener {
+        val width: Int; val height: Int
+        if (orientation(context) == ORIENTATION_LANDSCAPE) {
+          height = resources.getDimensionPixelSize(R.dimen.chroma_dialog_height)
+          width = 80 percentOf screenDimensions(context).widthPixels
+        } else {
+          height = WindowManager.LayoutParams.WRAP_CONTENT
+          width = resources.getDimensionPixelSize(R.dimen.chroma_dialog_width)
+        }
+        window.setLayout(width, height)
+      }
     }
-
-    return dialog
   }
 
   override fun onDestroyView() {
