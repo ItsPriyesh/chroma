@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package me.priyesh.chroma
+package me.priyesh.chroma.internal
 
 import android.content.Context
 import android.graphics.Color
@@ -23,9 +23,10 @@ import android.util.AttributeSet
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
-import me.priyesh.chroma.internal.ChannelView
+import me.priyesh.chroma.ColorMode
+import me.priyesh.chroma.R
 
-class ChromaView : RelativeLayout {
+internal class ChromaView : RelativeLayout {
 
   companion object {
     val DefaultColor = Color.GRAY
@@ -41,20 +42,6 @@ class ChromaView : RelativeLayout {
   constructor(@ColorInt initialColor: Int, colorMode: ColorMode, context: Context) : super(context) {
     this.currentColor = initialColor
     this.colorMode = colorMode
-    init()
-  }
-
-  constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-    val typedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.ChromaView, 0, 0)
-
-    try {
-      this.currentColor = typedArray.getColor(R.styleable.ChromaView_initialColor, DefaultColor)
-      this.colorMode = ColorMode.fromID(
-          typedArray.getInteger(R.styleable.ChromaView_colorMode, DefaultModel.ID))
-    } finally {
-      typedArray.recycle()
-    }
-
     init()
   }
 

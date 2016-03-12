@@ -23,6 +23,7 @@ import android.os.Bundle
 import android.support.annotation.ColorInt
 import android.support.v4.app.DialogFragment
 import android.view.WindowManager
+import me.priyesh.chroma.internal.ChromaView
 import kotlin.properties.Delegates
 
 class ChromaDialog constructor() : DialogFragment() {

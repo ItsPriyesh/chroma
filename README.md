@@ -25,18 +25,6 @@ new ChromaDialog.Builder()
     .show(getFragmentManager(), "ChromaDialog");
 ```
 
-Don't want a dialog? Use `ChromaView` directly:
-```
-<me.priyesh.chroma.ChromaView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:initialColor="@android:color/red"
-    app:colorMode="rgb"/>
-    
-ChromaView chromaView = ...;
-chromaView.getCurrentColor();
-```
-
 Check out the [sample project](chroma-sample) for more details.
 
 License
