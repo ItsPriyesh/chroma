@@ -1,5 +1,7 @@
 chroma
 ======
+[![Download](https://api.bintray.com/packages/itspriyesh/maven/chroma/images/download.svg)](https://bintray.com/itspriyesh/maven/chroma/_latestVersion)
+
 A Material color picker view for Android written in Kotlin.
 
 <img src="https://raw.githubusercontent.com/ItsPriyesh/chroma/master/art/red.png" width="250">
@@ -10,7 +12,7 @@ Download
 --------
 Add the following dependency to your projects `build.gradle`:
 ``` groovy
-compile 'me.priyesh:chroma:1.0.0'
+compile 'me.priyesh:chroma:1.0.1'
 ```
 
 Usage
@@ -22,7 +24,7 @@ new ChromaDialog.Builder()
     .initialColor(Color.GREEN)
     .onColorSelected(color -> /* do your stuff */)
     .create()
-    .show(getFragmentManager(), "ChromaDialog");
+    .show(getSupportFragmentManager(), "ChromaDialog");
 ```
 
 Check out the [sample project](chroma-sample) for more details.
