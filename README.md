@@ -10,7 +10,7 @@ Download
 --------
 Add the following dependency to your projects `build.gradle`:
 ``` groovy
-compile 'me.priyesh:chroma:1.0.0'
+compile 'me.priyesh:chroma:1.0.1'
 ```
 
 Usage
@@ -22,7 +22,7 @@ new ChromaDialog.Builder()
     .initialColor(Color.GREEN)
     .onColorSelected(color -> /* do your stuff */)
     .create()
-    .show(getFragmentManager(), "ChromaDialog");
+    .show(getSupportFragmentManager(), "ChromaDialog");
 ```
 
 Check out the [sample project](chroma-sample) for more details.
