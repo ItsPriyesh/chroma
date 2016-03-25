@@ -1,6 +1,7 @@
 chroma
 ======
 [![Download](https://api.bintray.com/packages/itspriyesh/maven/chroma/images/download.svg)](https://bintray.com/itspriyesh/maven/chroma/_latestVersion)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-chroma-green.svg?style=true)](https://android-arsenal.com/details/1/3339)
 
 A Material color picker view for Android written in Kotlin.
 
