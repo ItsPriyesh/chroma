@@ -21,41 +21,51 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.TextView;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import me.priyesh.chroma.ChromaDialog;
 import me.priyesh.chroma.ColorMode;
 import me.priyesh.chroma.ColorSelectListener;
 
 public class MainActivity extends AppCompatActivity {
 
-  private Toolbar mToolbar;
-  private TextView mColorTextView;
+  private static final String EXTRA_COLOR = "extra_color";
+
+  @Bind(R.id.toolbar) Toolbar mToolbar;
+  @Bind(R.id.text_view) TextView mColorTextView;
+
   private int mColor;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-
-    mToolbar = (Toolbar) findViewById(R.id.toolbar);
+    ButterKnife.bind(this);
     setSupportActionBar(mToolbar);
 
-    mColor = ContextCompat.getColor(this, R.color.colorPrimary);
+    mColor = savedInstanceState != null
+        ? savedInstanceState.getInt(EXTRA_COLOR)
+        : ContextCompat.getColor(this, R.color.colorPrimary);
 
-    mColorTextView = (TextView) findViewById(R.id.text_view);
     updateTextView(mColor);
+    updateToolbar(mColor, mColor);
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      getWindow().setStatusBarColor(darkenColor(mColor));
+    }
+  }
 
-    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-    fab.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View view) {
-        showColorPickerDialog();
-      }
-    });
+  @Override protected void onSaveInstanceState(Bundle outState) {
+    outState.putInt(EXTRA_COLOR, mColor);
+    super.onSaveInstanceState(outState);
+  }
+
+  @OnClick(R.id.fab) void onFabClick() {
+    showColorPickerDialog();
   }
 
   private void showColorPickerDialog() {
@@ -65,13 +75,14 @@ public class MainActivity extends AppCompatActivity {
         .onColorSelected(new ColorSelectListener() {
           @Override public void onColorSelected(int color) {
             updateTextView(color);
-            animateToolbarColor(mColor, color);
+            updateToolbar(mColor, color);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
               getWindow().setStatusBarColor(darkenColor(color));
             }
             mColor = color;
           }
-        }).create()
+        })
+        .create()
         .show(getSupportFragmentManager(), "dialog");
   }
 
@@ -79,16 +90,16 @@ public class MainActivity extends AppCompatActivity {
     mColorTextView.setText(String.format("#%06X", 0xFFFFFF & color));
   }
 
-  private void animateToolbarColor(int start, int end) {
+  private void updateToolbar(int oldColor, int newColor) {
     final TransitionDrawable transition = new TransitionDrawable(new ColorDrawable[]{
-        new ColorDrawable(start), new ColorDrawable(end)
+        new ColorDrawable(oldColor), new ColorDrawable(newColor)
     });
 
     mToolbar.setBackground(transition);
     transition.startTransition(300);
   }
 
-  private int darkenColor(int color) {
+  private static int darkenColor(int color) {
     float[] hsv = new float[3];
     Color.colorToHSV(color, hsv);
     hsv[2] *= 0.8f;
