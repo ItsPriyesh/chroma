@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<merge
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -16,8 +16,7 @@
         android:id="@+id/channel_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_below="@id/color_view"
+        android:layout_centerVertical="true"
         android:layout_toRightOf="@id/color_view"
         android:orientation="vertical"/>
 
@@ -28,4 +27,4 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/color_view"
         android:layout_alignParentRight="true"/>
-</RelativeLayout>
+</merge>
