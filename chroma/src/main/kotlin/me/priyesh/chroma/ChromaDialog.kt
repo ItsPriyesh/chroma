@@ -102,15 +102,11 @@ class ChromaDialog constructor() : DialogFragment() {
 
         return AlertDialog.Builder(context).setView(chromaView).create().apply {
             setOnShowListener {
-                val width: Int;
-                val height: Int
-                if (orientation(context) == ORIENTATION_LANDSCAPE) {
-                    height = resources.getDimensionPixelSize(R.dimen.chroma_dialog_height)
-                    width = 80 percentOf screenDimensions(context).widthPixels
-                } else {
-                    height = WindowManager.LayoutParams.WRAP_CONTENT
-                    width = resources.getDimensionPixelSize(R.dimen.chroma_dialog_width)
-                }
+                val multiplier = if(orientation(context) == ORIENTATION_LANDSCAPE) 2 else 1
+
+                val width = resources.getDimensionPixelSize(R.dimen.chroma_dialog_width) * multiplier
+                val height = WindowManager.LayoutParams.WRAP_CONTENT
+
                 window.setLayout(width, height)
             }
         }
