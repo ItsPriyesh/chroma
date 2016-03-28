@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity(), ColorSelectListener {
             window.statusBarColor = darkenColor(color)
         }
 
-      fab.setOnClickListener { showColorPickerDialog() }
+        fab.setOnClickListener { showColorPickerDialog() }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

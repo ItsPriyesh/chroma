@@ -16,7 +16,7 @@
 
 package me.priyesh.chroma
 
-import android.app.AlertDialog
+import android.support.v7.app.AlertDialog
 import android.app.Dialog
 import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.os.Bundle
@@ -100,7 +100,7 @@ class ChromaDialog constructor() : DialogFragment() {
             }
         })
 
-        return AlertDialog.Builder(context).setView(chromaView).create().apply {
+        return AlertDialog.Builder(context, theme).setView(chromaView).create().apply {
             setOnShowListener {
                 val multiplier = if(orientation(context) == ORIENTATION_LANDSCAPE) 2 else 1
 
