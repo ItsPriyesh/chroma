@@ -28,100 +28,101 @@ import kotlin.properties.Delegates
 
 class ChromaDialog constructor() : DialogFragment() {
 
-  companion object {
-    private val ArgInitialColor = "arg_initial_color"
-    private val ArgColorModeId = "arg_color_mode_id"
+    companion object {
+        private val ArgInitialColor = "arg_initial_color"
+        private val ArgColorModeId = "arg_color_mode_id"
 
-    @JvmStatic
-    private fun newInstance(@ColorInt initialColor: Int, colorMode: ColorMode): ChromaDialog {
-      val fragment = ChromaDialog()
-      fragment.arguments = makeArgs(initialColor, colorMode)
-      return fragment
-    }
-
-    @JvmStatic
-    private fun makeArgs(@ColorInt initialColor: Int, colorMode: ColorMode): Bundle {
-      val args = Bundle()
-      args.putInt(ArgInitialColor, initialColor)
-      args.putInt(ArgColorModeId, colorMode.ID)
-      return args
-    }
-  }
-
-  class Builder {
-    @ColorInt private var initialColor: Int = ChromaView.DefaultColor
-    private var colorMode: ColorMode = ChromaView.DefaultModel
-    private var listener: ColorSelectListener? = null
-
-    fun initialColor(@ColorInt initialColor: Int): Builder {
-      this.initialColor = initialColor
-      return this
-    }
-
-    fun colorMode(colorMode: ColorMode): Builder {
-      this.colorMode = colorMode
-      return this
-    }
-
-    fun onColorSelected(listener: ColorSelectListener): Builder {
-      this.listener = listener
-      return this
-    }
-
-    fun create(): ChromaDialog {
-      val fragment = newInstance(initialColor, colorMode)
-      fragment.listener = listener
-      return fragment
-    }
-  }
-
-  private var listener: ColorSelectListener? = null
-  private var chromaView: ChromaView by Delegates.notNull<ChromaView>()
-
-  override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-    chromaView = if (savedInstanceState == null) {
-      ChromaView(
-          arguments.getInt(ArgInitialColor),
-          ColorMode.fromID(arguments.getInt(ArgColorModeId)),
-          context)
-    } else {
-      ChromaView(
-          savedInstanceState.getInt(ArgInitialColor, ChromaView.DefaultColor),
-          ColorMode.fromID(savedInstanceState.getInt(ArgColorModeId, ChromaView.DefaultModel.ID)),
-          context
-      )
-    }
-
-    chromaView.enableButtonBar(object : ChromaView.ButtonBarListener {
-      override fun onNegativeButtonClick() = dismiss()
-      override fun onPositiveButtonClick(color: Int) {
-        listener?.onColorSelected(color)
-        dismiss()
-      }
-    })
-
-    return AlertDialog.Builder(context).setView(chromaView).create().apply {
-      setOnShowListener {
-        val width: Int; val height: Int
-        if (orientation(context) == ORIENTATION_LANDSCAPE) {
-          height = resources.getDimensionPixelSize(R.dimen.chroma_dialog_height)
-          width = 80 percentOf screenDimensions(context).widthPixels
-        } else {
-          height = WindowManager.LayoutParams.WRAP_CONTENT
-          width = resources.getDimensionPixelSize(R.dimen.chroma_dialog_width)
+        @JvmStatic
+        private fun newInstance(@ColorInt initialColor: Int, colorMode: ColorMode): ChromaDialog {
+            val fragment = ChromaDialog()
+            fragment.arguments = makeArgs(initialColor, colorMode)
+            return fragment
         }
-        window.setLayout(width, height)
-      }
+
+        @JvmStatic
+        private fun makeArgs(@ColorInt initialColor: Int, colorMode: ColorMode): Bundle {
+            val args = Bundle()
+            args.putInt(ArgInitialColor, initialColor)
+            args.putInt(ArgColorModeId, colorMode.ID)
+            return args
+        }
     }
-  }
 
-  override fun onSaveInstanceState(outState: Bundle?) {
-    outState?.putAll(makeArgs(chromaView.currentColor, chromaView.colorMode))
-    super.onSaveInstanceState(outState)
-  }
+    class Builder {
+        @ColorInt private var initialColor: Int = ChromaView.DefaultColor
+        private var colorMode: ColorMode = ChromaView.DefaultModel
+        private var listener: ColorSelectListener? = null
 
-  override fun onDestroyView() {
-    super.onDestroyView()
-    listener = null
-  }
+        fun initialColor(@ColorInt initialColor: Int): Builder {
+            this.initialColor = initialColor
+            return this
+        }
+
+        fun colorMode(colorMode: ColorMode): Builder {
+            this.colorMode = colorMode
+            return this
+        }
+
+        fun onColorSelected(listener: ColorSelectListener): Builder {
+            this.listener = listener
+            return this
+        }
+
+        fun create(): ChromaDialog {
+            val fragment = newInstance(initialColor, colorMode)
+            fragment.listener = listener
+            return fragment
+        }
+    }
+
+    private var listener: ColorSelectListener? = null
+    private var chromaView: ChromaView by Delegates.notNull<ChromaView>()
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        chromaView = if (savedInstanceState == null) {
+            ChromaView(
+                    arguments.getInt(ArgInitialColor),
+                    ColorMode.fromID(arguments.getInt(ArgColorModeId)),
+                    context)
+        } else {
+            ChromaView(
+                    savedInstanceState.getInt(ArgInitialColor, ChromaView.DefaultColor),
+                    ColorMode.fromID(savedInstanceState.getInt(ArgColorModeId, ChromaView.DefaultModel.ID)),
+                    context
+            )
+        }
+
+        chromaView.enableButtonBar(object : ChromaView.ButtonBarListener {
+            override fun onNegativeButtonClick() = dismiss()
+            override fun onPositiveButtonClick(color: Int) {
+                listener?.onColorSelected(color)
+                dismiss()
+            }
+        })
+
+        return AlertDialog.Builder(context).setView(chromaView).create().apply {
+            setOnShowListener {
+                val width: Int;
+                val height: Int
+                if (orientation(context) == ORIENTATION_LANDSCAPE) {
+                    height = resources.getDimensionPixelSize(R.dimen.chroma_dialog_height)
+                    width = 80 percentOf screenDimensions(context).widthPixels
+                } else {
+                    height = WindowManager.LayoutParams.WRAP_CONTENT
+                    width = resources.getDimensionPixelSize(R.dimen.chroma_dialog_width)
+                }
+                window.setLayout(width, height)
+            }
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        outState?.putAll(makeArgs(chromaView.currentColor, chromaView.colorMode))
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        listener = null
+    }
 }

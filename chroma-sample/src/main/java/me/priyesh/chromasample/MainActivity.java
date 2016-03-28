@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
   private void showColorPickerDialog() {
     new ChromaDialog.Builder()
         .initialColor(mColor)
-        .colorMode(ColorMode.RGB)
+        .colorMode(ColorMode.HSV)
         .onColorSelected(new ColorSelectListener() {
           @Override public void onColorSelected(int color) {
             updateTextView(color);
