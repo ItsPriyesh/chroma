@@ -53,12 +53,12 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:23.2.0'
+    compile 'com.android.support:appcompat-v7:23.2.1'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
 
 buildscript {
-    ext.kotlin_version = '1.0.0'
+    ext.kotlin_version = '1.0.1'
     repositories {
         mavenCentral()
     }
