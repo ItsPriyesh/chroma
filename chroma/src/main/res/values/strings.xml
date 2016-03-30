@@ -4,6 +4,7 @@
     <string name="button_positive">OK</string>
     <string name="button_negative">Cancel</string>
 
+    <string name="channel_alpha">A</string>
     <string name="channel_red">R</string>
     <string name="channel_green">G</string>
     <string name="channel_blue">B</string>

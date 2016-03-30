@@ -21,45 +21,37 @@ import android.graphics.Color
 enum class ColorMode(internal val ID: Int) {
 
   RGB(ID = 0) {
-    override val channels: List<Channel> = listOf(
-        Channel(R.string.channel_red, 0, 255,
-            { color -> Color.red(color) }),
+    override val channels: List<Channel> = ARGB.channels.drop(1)
 
-        Channel(R.string.channel_green, 0, 255,
-            { color -> Color.green(color) }),
-
-        Channel(R.string.channel_blue, 0, 255,
-            { color -> Color.blue(color) })
-    )
-
-    override fun evaluateColor(channels: List<Channel>): Int =
-        Color.rgb(channels[0].progress, channels[1].progress, channels[2].progress)
+    override fun evaluateColor(channels: List<Channel>): Int = Color.rgb(
+        channels[0].progress, channels[1].progress, channels[2].progress)
   },
 
   HSV(ID = 1) {
     override val channels: List<Channel> = listOf(
-        Channel(R.string.channel_hue, 0, 360,
-            { color -> colorToHSV(color)[0].toInt() }),
-
-        Channel(R.string.channel_saturation, 0, 100,
-            { color -> (colorToHSV(color)[1] * 100).toInt() }),
-
-        Channel(R.string.channel_value, 0, 100,
-            { color -> (colorToHSV(color)[2] * 100).toInt() })
+        Channel(R.string.channel_hue, 0, 360, ::hue),
+        Channel(R.string.channel_saturation, 0, 100, ::saturation),
+        Channel(R.string.channel_value, 0, 100, ::brightness)
     )
 
-    override fun evaluateColor(channels: List<Channel>): Int =
-        Color.HSVToColor(floatArrayOf(
+    override fun evaluateColor(channels: List<Channel>): Int = Color.HSVToColor(
+        floatArrayOf(
             (channels[0].progress).toFloat(),
             (channels[1].progress / 100.0).toFloat(),
             (channels[2].progress / 100.0).toFloat()
         ))
+  },
 
-    private fun colorToHSV(color: Int): FloatArray {
-      val hsv = FloatArray(3)
-      Color.colorToHSV(color, hsv)
-      return hsv
-    }
+  ARGB(ID = 2) {
+    override val channels: List<Channel> = listOf(
+        Channel(R.string.channel_alpha, 0, 255, Color::alpha),
+        Channel(R.string.channel_red, 0, 255, Color::red),
+        Channel(R.string.channel_green, 0, 255, Color::green),
+        Channel(R.string.channel_blue, 0, 255, Color::blue)
+    )
+
+    override fun evaluateColor(channels: List<Channel>): Int = Color.argb(
+        channels[0].progress, channels[1].progress, channels[2].progress, channels[3].progress)
   };
 
   abstract internal val channels: List<Channel>
@@ -67,14 +59,11 @@ enum class ColorMode(internal val ID: Int) {
   abstract internal fun evaluateColor(channels: List<Channel>): Int
 
   internal data class Channel(val nameResourceId: Int,
-                     val min: Int, val max: Int,
-                     val extractor: (color: Int) -> Int,
-                     var progress: Int = 0)
+                              val min: Int, val max: Int,
+                              val extractor: (color: Int) -> Int,
+                              var progress: Int = 0)
 
   internal companion object {
-    fun fromID(id: Int): ColorMode {
-      for (model in values()) if (model.ID == id) return model
-      return ColorMode.RGB
-    }
+    fun fromID(id: Int) = values().find { it.ID == id } ?: ColorMode.RGB
   }
 }
