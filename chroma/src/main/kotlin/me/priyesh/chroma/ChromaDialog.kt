@@ -44,7 +44,7 @@ class ChromaDialog constructor() : DialogFragment() {
         private fun makeArgs(@ColorInt initialColor: Int, colorMode: ColorMode, indicatorMode: IndicatorMode): Bundle {
             val args = Bundle()
             args.putInt(ArgInitialColor, initialColor)
-            args.putInt(ArgColorModeId, colorMode.ID)
+            args.putInt(ArgColorModeId, colorMode.ordinal)
             args.putInt(ArgIndicatorMode, indicatorMode.ordinal)
             return args
         }
@@ -90,13 +90,13 @@ class ChromaDialog constructor() : DialogFragment() {
         chromaView = if (savedInstanceState == null) {
             ChromaView(
                     arguments.getInt(ArgInitialColor),
-                    ColorMode.fromID(arguments.getInt(ArgColorModeId)),
+                    ColorMode.fromOrdinal(arguments.getInt(ArgColorModeId)),
                     IndicatorMode.values()[arguments.getInt(ArgIndicatorMode)],
                     context)
         } else {
             ChromaView(
                     savedInstanceState.getInt(ArgInitialColor, ChromaView.DefaultColor),
-                    ColorMode.fromID(savedInstanceState.getInt(ArgColorModeId, ChromaView.DefaultModel.ID)),
+                    ColorMode.fromOrdinal(savedInstanceState.getInt(ArgColorModeId, ChromaView.DefaultModel.ordinal)),
                     IndicatorMode.values()[savedInstanceState.getInt(ArgIndicatorMode)],
                     context
             )
