@@ -31,19 +31,21 @@ class ChromaDialog constructor() : DialogFragment() {
     companion object {
         private val ArgInitialColor = "arg_initial_color"
         private val ArgColorModeId = "arg_color_mode_id"
+        private val ArgIndicatorMode = "arg_indicator_mode"
 
         @JvmStatic
-        private fun newInstance(@ColorInt initialColor: Int, colorMode: ColorMode): ChromaDialog {
+        private fun newInstance(@ColorInt initialColor: Int, colorMode: ColorMode, indicatorMode: IndicatorMode): ChromaDialog {
             val fragment = ChromaDialog()
-            fragment.arguments = makeArgs(initialColor, colorMode)
+            fragment.arguments = makeArgs(initialColor, colorMode, indicatorMode)
             return fragment
         }
 
         @JvmStatic
-        private fun makeArgs(@ColorInt initialColor: Int, colorMode: ColorMode): Bundle {
+        private fun makeArgs(@ColorInt initialColor: Int, colorMode: ColorMode, indicatorMode: IndicatorMode): Bundle {
             val args = Bundle()
             args.putInt(ArgInitialColor, initialColor)
             args.putInt(ArgColorModeId, colorMode.ID)
+            args.putInt(ArgIndicatorMode, indicatorMode.ordinal)
             return args
         }
     }
@@ -51,6 +53,7 @@ class ChromaDialog constructor() : DialogFragment() {
     class Builder {
         @ColorInt private var initialColor: Int = ChromaView.DefaultColor
         private var colorMode: ColorMode = ChromaView.DefaultModel
+        private var indicatorMode: IndicatorMode = IndicatorMode.DECIMAL
         private var listener: ColorSelectListener? = null
 
         fun initialColor(@ColorInt initialColor: Int): Builder {
@@ -63,13 +66,18 @@ class ChromaDialog constructor() : DialogFragment() {
             return this
         }
 
+        fun indicatorMode(indicatorMode: IndicatorMode): Builder {
+            this.indicatorMode = indicatorMode
+            return this
+        }
+
         fun onColorSelected(listener: ColorSelectListener): Builder {
             this.listener = listener
             return this
         }
 
         fun create(): ChromaDialog {
-            val fragment = newInstance(initialColor, colorMode)
+            val fragment = newInstance(initialColor, colorMode, indicatorMode)
             fragment.listener = listener
             return fragment
         }
@@ -83,11 +91,13 @@ class ChromaDialog constructor() : DialogFragment() {
             ChromaView(
                     arguments.getInt(ArgInitialColor),
                     ColorMode.fromID(arguments.getInt(ArgColorModeId)),
+                    IndicatorMode.values()[arguments.getInt(ArgIndicatorMode)],
                     context)
         } else {
             ChromaView(
                     savedInstanceState.getInt(ArgInitialColor, ChromaView.DefaultColor),
                     ColorMode.fromID(savedInstanceState.getInt(ArgColorModeId, ChromaView.DefaultModel.ID)),
+                    IndicatorMode.values()[savedInstanceState.getInt(ArgIndicatorMode)],
                     context
             )
         }
@@ -113,7 +123,7 @@ class ChromaDialog constructor() : DialogFragment() {
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
-        outState?.putAll(makeArgs(chromaView.currentColor, chromaView.colorMode))
+        outState?.putAll(makeArgs(chromaView.currentColor, chromaView.colorMode, chromaView.indicatorMode))
         super.onSaveInstanceState(outState)
     }
 

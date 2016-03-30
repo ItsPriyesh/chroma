@@ -23,6 +23,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import me.priyesh.chroma.ColorMode
+import me.priyesh.chroma.IndicatorMode
 import me.priyesh.chroma.R
 
 internal class ChromaView : RelativeLayout {
@@ -30,17 +31,20 @@ internal class ChromaView : RelativeLayout {
     companion object {
         val DefaultColor = Color.GRAY
         val DefaultModel = ColorMode.RGB
+        val DefaultIndicatorMode = IndicatorMode.DECIMAL
     }
 
     @ColorInt var currentColor: Int private set
 
     val colorMode: ColorMode
+    val indicatorMode: IndicatorMode
 
-    constructor(context: Context) : this(DefaultColor, DefaultModel, context)
+    constructor(context: Context) : this(DefaultColor, DefaultModel, DefaultIndicatorMode, context)
 
-    constructor(@ColorInt initialColor: Int, colorMode: ColorMode, context: Context) : super(context) {
+    constructor(@ColorInt initialColor: Int, colorMode: ColorMode, indicatorMode: IndicatorMode, context: Context) : super(context) {
         this.currentColor = initialColor
         this.colorMode = colorMode
+        this.indicatorMode = indicatorMode
         init()
     }
 
@@ -51,7 +55,7 @@ internal class ChromaView : RelativeLayout {
         val colorView = findViewById(R.id.color_view)
         colorView.setBackgroundColor(currentColor)
 
-        val channelViews = colorMode.channels.map { ChannelView(it, currentColor, context) }
+        val channelViews = colorMode.channels.map { ChannelView(it, currentColor, indicatorMode, context) }
 
         val seekbarChangeListener = {
             currentColor = colorMode.evaluateColor(channelViews.map { it.channel })

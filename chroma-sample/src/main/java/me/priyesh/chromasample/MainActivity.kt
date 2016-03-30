@@ -28,6 +28,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import me.priyesh.chroma.ChromaDialog
 import me.priyesh.chroma.ColorMode
 import me.priyesh.chroma.ColorSelectListener
+import me.priyesh.chroma.IndicatorMode
 
 class MainActivity : AppCompatActivity(), ColorSelectListener {
 
@@ -61,6 +62,7 @@ class MainActivity : AppCompatActivity(), ColorSelectListener {
         ChromaDialog.Builder()
                 .initialColor(color)
                 .colorMode(ColorMode.ARGB)
+                .indicatorMode(IndicatorMode.HEX)
                 .onColorSelected(this)
                 .create()
                 .show(supportFragmentManager, "dialog")

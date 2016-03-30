@@ -24,10 +24,12 @@ import android.widget.SeekBar
 import android.widget.TextView
 import me.priyesh.chroma.R
 import me.priyesh.chroma.ColorMode
+import me.priyesh.chroma.IndicatorMode
 
 internal class ChannelView(
         val channel: ColorMode.Channel,
         @ColorInt color: Int,
+        val indicatorMode: IndicatorMode,
         context: Context) : RelativeLayout(context) {
 
     internal var listener: (() -> Unit)? = null
@@ -48,7 +50,7 @@ internal class ChannelView(
         (root.findViewById(R.id.label) as TextView).text = context.getString(channel.nameResourceId)
 
         val progressView = root.findViewById(R.id.progress_text) as TextView
-        progressView.text = channel.progress.toString()
+        progressView.setProgress(channel.progress)
 
         val seekbar = root.findViewById(R.id.seekbar) as SeekBar
         seekbar.max = channel.max
@@ -62,11 +64,20 @@ internal class ChannelView(
 
             override fun onProgressChanged(seekbar: SeekBar?, progress: Int, fromUser: Boolean) {
                 channel.progress = progress
-                progressView.text = progress.toString()
+                progressView.setProgress(progress)
                 listener?.invoke()
             }
         })
     }
+
+    fun TextView.setProgress(progress: Int) {
+        if (indicatorMode === IndicatorMode.HEX) {
+            text = Integer.toHexString(progress)
+        } else {
+            text = progress.toString()
+        }
+    }
+
 
     fun registerListener(listener: () -> Unit): Unit {
         this.listener = listener
