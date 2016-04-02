@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
-def VersionName = '1.0.1'
+def VersionName = '1.0.2'
 
 ext {
     bintrayRepo = 'maven'

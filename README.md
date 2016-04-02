@@ -3,7 +3,7 @@ chroma
 [![Download](https://api.bintray.com/packages/itspriyesh/maven/chroma/images/download.svg)](https://bintray.com/itspriyesh/maven/chroma/_latestVersion)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-chroma-green.svg?style=true)](https://android-arsenal.com/details/1/3339)
 
-A Material color picker view for Android written in Kotlin.
+A simple, lightweight color picker for Android written in Kotlin (interoperable with Java).
 
 <img src="https://raw.githubusercontent.com/ItsPriyesh/chroma/master/art/red.png" width="250">
 <img src="https://raw.githubusercontent.com/ItsPriyesh/chroma/master/art/green.png" width="250">
@@ -13,12 +13,12 @@ Download
 --------
 Add the following dependency to your projects `build.gradle`:
 ``` groovy
-compile 'me.priyesh:chroma:1.0.1'
+compile 'me.priyesh:chroma:1.0.2'
 ```
 
 Usage
 -----
-To display an RGB color picker `DialogFragment`:
+To display a color picker `DialogFragment`:
 
 ``` java
 new ChromaDialog.Builder()
