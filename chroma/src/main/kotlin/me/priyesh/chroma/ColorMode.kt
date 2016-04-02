@@ -18,31 +18,9 @@ package me.priyesh.chroma
 
 import android.graphics.Color
 
-enum class ColorMode(internal val ID: Int) {
+enum class ColorMode {
 
-  RGB(ID = 0) {
-    override val channels: List<Channel> = ARGB.channels.drop(1)
-
-    override fun evaluateColor(channels: List<Channel>): Int = Color.rgb(
-        channels[0].progress, channels[1].progress, channels[2].progress)
-  },
-
-  HSV(ID = 1) {
-    override val channels: List<Channel> = listOf(
-        Channel(R.string.channel_hue, 0, 360, ::hue),
-        Channel(R.string.channel_saturation, 0, 100, ::saturation),
-        Channel(R.string.channel_value, 0, 100, ::brightness)
-    )
-
-    override fun evaluateColor(channels: List<Channel>): Int = Color.HSVToColor(
-        floatArrayOf(
-            (channels[0].progress).toFloat(),
-            (channels[1].progress / 100.0).toFloat(),
-            (channels[2].progress / 100.0).toFloat()
-        ))
-  },
-
-  ARGB(ID = 2) {
+  ARGB {
     override val channels: List<Channel> = listOf(
         Channel(R.string.channel_alpha, 0, 255, Color::alpha),
         Channel(R.string.channel_red, 0, 255, Color::red),
@@ -52,6 +30,28 @@ enum class ColorMode(internal val ID: Int) {
 
     override fun evaluateColor(channels: List<Channel>): Int = Color.argb(
         channels[0].progress, channels[1].progress, channels[2].progress, channels[3].progress)
+  },
+
+  RGB {
+    override val channels: List<Channel> = ARGB.channels.drop(1)
+
+    override fun evaluateColor(channels: List<Channel>): Int = Color.rgb(
+        channels[0].progress, channels[1].progress, channels[2].progress)
+  },
+
+  HSV {
+    override val channels: List<Channel> = listOf(
+        Channel(R.string.channel_hue, 0, 360, ::hue),
+        Channel(R.string.channel_saturation, 0, 100, ::saturation),
+        Channel(R.string.channel_value, 0, 100, ::value)
+    )
+
+    override fun evaluateColor(channels: List<Channel>): Int = Color.HSVToColor(
+        floatArrayOf(
+            (channels[0].progress).toFloat(),
+            (channels[1].progress / 100.0).toFloat(),
+            (channels[2].progress / 100.0).toFloat()
+        ))
   };
 
   abstract internal val channels: List<Channel>
@@ -63,7 +63,7 @@ enum class ColorMode(internal val ID: Int) {
                               val extractor: (color: Int) -> Int,
                               var progress: Int = 0)
 
-  internal companion object {
-    fun fromID(id: Int) = values().find { it.ID == id } ?: ColorMode.RGB
+  companion object {
+    @JvmStatic fun fromName(name: String) = values().find { it.name == name } ?: ColorMode.RGB
   }
 }

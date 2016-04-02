@@ -16,14 +16,14 @@
 
 package me.priyesh.chromasample;
 
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.TransitionDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import butterknife.Bind;
@@ -33,12 +33,15 @@ import me.priyesh.chroma.ChromaDialog;
 import me.priyesh.chroma.ColorMode;
 import me.priyesh.chroma.ColorSelectListener;
 
+
 public class MainActivity extends AppCompatActivity {
 
-  private static final String EXTRA_COLOR = "extra_color";
+  private static final String KEY_COLOR = "extra_color";
+  private static final String KEY_COLOR_MODE = "extra_color_mode";
 
   @Bind(R.id.toolbar) Toolbar mToolbar;
   @Bind(R.id.text_view) TextView mColorTextView;
+  @Bind(R.id.color_mode_spinner) Spinner mColorModeSpinner;
 
   private int mColor;
 
@@ -46,21 +49,33 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     ButterKnife.bind(this);
+
     setSupportActionBar(mToolbar);
+    int statusBarHeight = statusBarHeight();
+    mToolbar.setPadding(0, statusBarHeight, 0, 0);
+    mToolbar.getLayoutParams().height += statusBarHeight;
 
     mColor = savedInstanceState != null
-        ? savedInstanceState.getInt(EXTRA_COLOR)
+        ? savedInstanceState.getInt(KEY_COLOR)
         : ContextCompat.getColor(this, R.color.colorPrimary);
+
+    ColorMode colorMode = savedInstanceState != null
+        ? ColorMode.valueOf(savedInstanceState.getString(KEY_COLOR_MODE))
+        : ColorMode.RGB;
+
+    ArrayAdapter<ColorMode> adapter = new ArrayAdapter<>(
+        this, android.R.layout.simple_spinner_dropdown_item, ColorMode.values());
+
+    mColorModeSpinner.setAdapter(adapter);
+    mColorModeSpinner.setSelection(adapter.getPosition(colorMode));
 
     updateTextView(mColor);
     updateToolbar(mColor, mColor);
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      getWindow().setStatusBarColor(darkenColor(mColor));
-    }
   }
 
   @Override protected void onSaveInstanceState(Bundle outState) {
-    outState.putInt(EXTRA_COLOR, mColor);
+    outState.putInt(KEY_COLOR, mColor);
+    outState.putString(KEY_COLOR_MODE, mColorModeSpinner.getSelectedItem().toString());
     super.onSaveInstanceState(outState);
   }
 
@@ -71,14 +86,11 @@ public class MainActivity extends AppCompatActivity {
   private void showColorPickerDialog() {
     new ChromaDialog.Builder()
         .initialColor(mColor)
-        .colorMode(ColorMode.RGB)
+        .colorMode((ColorMode) mColorModeSpinner.getSelectedItem())
         .onColorSelected(new ColorSelectListener() {
           @Override public void onColorSelected(int color) {
             updateTextView(color);
             updateToolbar(mColor, color);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-              getWindow().setStatusBarColor(darkenColor(color));
-            }
             mColor = color;
           }
         })
@@ -99,10 +111,8 @@ public class MainActivity extends AppCompatActivity {
     transition.startTransition(300);
   }
 
-  private static int darkenColor(int color) {
-    float[] hsv = new float[3];
-    Color.colorToHSV(color, hsv);
-    hsv[2] *= 0.8f;
-    return Color.HSVToColor(hsv);
+  private int statusBarHeight() {
+    int resId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+    return resId != 0 ? getResources().getDimensionPixelSize(resId) : 0;
   }
 }

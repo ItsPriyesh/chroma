@@ -30,7 +30,7 @@ class ChromaDialog constructor() : DialogFragment() {
 
   companion object {
     private val ArgInitialColor = "arg_initial_color"
-    private val ArgColorModeId = "arg_color_mode_id"
+    private val ArgColorModeName = "arg_color_mode_name"
 
     @JvmStatic
     private fun newInstance(@ColorInt initialColor: Int, colorMode: ColorMode): ChromaDialog {
@@ -43,7 +43,7 @@ class ChromaDialog constructor() : DialogFragment() {
     private fun makeArgs(@ColorInt initialColor: Int, colorMode: ColorMode): Bundle {
       val args = Bundle()
       args.putInt(ArgInitialColor, initialColor)
-      args.putInt(ArgColorModeId, colorMode.ID)
+      args.putString(ArgColorModeName, colorMode.name)
       return args
     }
   }
@@ -82,12 +82,12 @@ class ChromaDialog constructor() : DialogFragment() {
     chromaView = if (savedInstanceState == null) {
       ChromaView(
           arguments.getInt(ArgInitialColor),
-          ColorMode.fromID(arguments.getInt(ArgColorModeId)),
+          ColorMode.fromName(arguments.getString(ArgColorModeName)),
           context)
     } else {
       ChromaView(
           savedInstanceState.getInt(ArgInitialColor, ChromaView.DefaultColor),
-          ColorMode.fromID(savedInstanceState.getInt(ArgColorModeId, ChromaView.DefaultModel.ID)),
+          ColorMode.fromName(savedInstanceState.getString(ArgColorModeName)),
           context
       )
     }
