@@ -23,6 +23,7 @@ To display an RGB color picker `DialogFragment`:
 ``` java
 new ChromaDialog.Builder()
     .initialColor(Color.GREEN)
+    .colorMode(ColorMode.RGB) // There's also ARGB and HSV
     .onColorSelected(color -> /* do your stuff */)
     .create()
     .show(getSupportFragmentManager(), "ChromaDialog");
