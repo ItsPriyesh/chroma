@@ -19,8 +19,8 @@ package me.priyesh.chroma.internal
 import android.content.Context
 import android.graphics.Color
 import android.support.annotation.ColorInt
-import android.util.AttributeSet
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import me.priyesh.chroma.ColorMode
@@ -91,5 +91,13 @@ internal class ChromaView : RelativeLayout {
         negativeButton.setOnClickListener(null)
       }
     }
+  }
+
+  internal fun setPositiveButtonText(positiveButtonText: String) {
+    (findViewById(R.id.positive_button) as Button).text = positiveButtonText
+  }
+
+  internal fun setNegativeButtonText(negativeButtonText: String) {
+    (findViewById(R.id.negative_button) as Button).text = negativeButtonText
   }
 }

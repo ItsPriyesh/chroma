@@ -25,6 +25,8 @@ new ChromaDialog.Builder()
     .initialColor(Color.GREEN)
     .colorMode(ColorMode.RGB) // There's also ARGB and HSV
     .onColorSelected(color -> /* do your stuff */)
+    .positiveButtonText("Select") // "OK" by default
+    .negativeButtonText("Exit") // "Cancel" by default
     .create()
     .show(getSupportFragmentManager(), "ChromaDialog");
 ```

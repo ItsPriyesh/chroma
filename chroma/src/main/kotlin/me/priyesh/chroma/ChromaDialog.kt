@@ -52,6 +52,8 @@ class ChromaDialog constructor() : DialogFragment() {
     @ColorInt private var initialColor: Int = ChromaView.DefaultColor
     private var colorMode: ColorMode = ChromaView.DefaultModel
     private var listener: ColorSelectListener? = null
+    private var positiveButtonText: String? = null
+    private var negativeButtonText: String? = null
 
     fun initialColor(@ColorInt initialColor: Int): Builder {
       this.initialColor = initialColor
@@ -68,15 +70,29 @@ class ChromaDialog constructor() : DialogFragment() {
       return this
     }
 
+    fun positiveButtonText(positiveButtonText: String): Builder {
+      this.positiveButtonText = positiveButtonText
+      return this
+    }
+
+    fun negativeButtonText(negativeButtonText: String): Builder {
+      this.negativeButtonText = negativeButtonText
+      return this
+    }
+
     fun create(): ChromaDialog {
-      val fragment = newInstance(initialColor, colorMode)
-      fragment.listener = listener
-      return fragment
+      return newInstance(initialColor, colorMode).apply {
+        this.listener = listener
+        this.positiveButtonText = positiveButtonText
+        this.negativeButtonText = negativeButtonText
+      }
     }
   }
 
   private var listener: ColorSelectListener? = null
   private var chromaView: ChromaView by Delegates.notNull<ChromaView>()
+  private var positiveButtonText: String? = null
+  private var negativeButtonText: String? = null
 
   override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
     chromaView = if (savedInstanceState == null) {
@@ -91,6 +107,9 @@ class ChromaDialog constructor() : DialogFragment() {
           context
       )
     }
+
+    positiveButtonText?.let { chromaView.setPositiveButtonText(it) }
+    negativeButtonText?.let { chromaView.setNegativeButtonText(it) }
 
     chromaView.enableButtonBar(object : ChromaView.ButtonBarListener {
       override fun onNegativeButtonClick() = dismiss()
