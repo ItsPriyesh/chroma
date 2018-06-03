@@ -81,15 +81,14 @@ class ChromaDialog constructor() : DialogFragment() {
   override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
     chromaView = if (savedInstanceState == null) {
       ChromaView(
-          arguments.getInt(ArgInitialColor),
-          ColorMode.fromName(arguments.getString(ArgColorModeName)),
-          context)
+          arguments?.getInt(ArgInitialColor),
+          ColorMode.fromName(arguments!!.getString(ArgColorModeName))!!,
+          context!!)
     } else {
       ChromaView(
           savedInstanceState.getInt(ArgInitialColor, ChromaView.DefaultColor),
           ColorMode.fromName(savedInstanceState.getString(ArgColorModeName)),
-          context
-      )
+          context!!)
     }
 
     chromaView.enableButtonBar(object : ChromaView.ButtonBarListener {
@@ -113,11 +112,6 @@ class ChromaDialog constructor() : DialogFragment() {
         window.setLayout(width, height)
       }
     }
-  }
-
-  override fun onSaveInstanceState(outState: Bundle?) {
-    outState?.putAll(makeArgs(chromaView.currentColor, chromaView.colorMode))
-    super.onSaveInstanceState(outState)
   }
 
   override fun onDestroyView() {

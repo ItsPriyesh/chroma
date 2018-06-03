@@ -20,7 +20,9 @@ import android.content.Context
 import android.graphics.Color
 import android.support.annotation.ColorInt
 import android.util.AttributeSet
+import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import me.priyesh.chroma.ColorMode
@@ -39,8 +41,8 @@ internal class ChromaView : RelativeLayout {
 
   constructor(context: Context) : this(DefaultColor, DefaultModel, context)
 
-  constructor(@ColorInt initialColor: Int, colorMode: ColorMode, context: Context) : super(context) {
-    this.currentColor = initialColor
+  constructor(@ColorInt initialColor: Int?, colorMode: ColorMode, context: Context) : super(context) {
+    this.currentColor = initialColor!!
     this.colorMode = colorMode
     init()
   }
@@ -49,7 +51,7 @@ internal class ChromaView : RelativeLayout {
     inflate(context, R.layout.chroma_view, this)
     clipToPadding = false
 
-    val colorView = findViewById(R.id.color_view)
+    val colorView = findViewById<View>(R.id.color_view)
     colorView.setBackgroundColor(currentColor)
 
     val channelViews = colorMode.channels.map { ChannelView(it, currentColor, context) }
@@ -77,9 +79,9 @@ internal class ChromaView : RelativeLayout {
   }
 
   internal fun enableButtonBar(listener: ButtonBarListener?): Unit {
-    with(findViewById(R.id.button_bar)) {
-      val positiveButton = findViewById(R.id.positive_button)
-      val negativeButton = findViewById(R.id.negative_button)
+    with(findViewById<LinearLayout>(R.id.button_bar)) {
+      val positiveButton = findViewById<Button>(R.id.positive_button)
+      val negativeButton = findViewById<Button>(R.id.negative_button)
 
       if (listener != null) {
         visibility = VISIBLE
