@@ -29,6 +29,19 @@ new ChromaDialog.Builder()
     .show(getSupportFragmentManager(), "ChromaDialog");
 ```
 
+To customise the button text for the color picker
+
+``` java
+new ChromaDialog.Builder()
+    .initialColor(Color.GREEN)
+    .colorMode(ColorMode.RGB) // There's also ARGB and HSV
+    .onColorSelected(color -> /* do your stuff */)
+    .setPositiveButtonText("Yes")
+    .setNegativeButtonText("Cancel")
+    .create()
+    .show(getSupportFragmentManager(), "ChromaDialog");
+```
+
 Check out the [sample project](chroma-sample) for more details.
 
 License

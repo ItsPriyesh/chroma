@@ -70,12 +70,12 @@ class ChromaDialog constructor() : DialogFragment() {
             return this
         }
 
-        fun positiveButton(positiveButton: String): Builder {
+        fun setPositiveButtonText(positiveButton: String): Builder {
             this.positiveButton = positiveButton
             return this
         }
 
-        fun negativeButton(negativeButton: String): Builder {
+        fun setNegativeButtonText(negativeButton: String): Builder {
             this.negativeButton = negativeButton
             return this
         }
