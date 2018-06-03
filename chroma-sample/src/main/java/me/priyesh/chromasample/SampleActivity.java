@@ -1,26 +1,11 @@
-/*
- * Copyright 2016 Priyesh Patel
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package me.priyesh.chromasample;
 
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.TransitionDrawable;
-import android.os.Bundle;
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -33,8 +18,7 @@ import me.priyesh.chroma.ChromaDialog;
 import me.priyesh.chroma.ColorMode;
 import me.priyesh.chroma.ColorSelectListener;
 
-
-public class MainActivity extends AppCompatActivity {
+public class SampleActivity extends AppCompatActivity {
 
     private static final String KEY_COLOR = "extra_color";
     private static final String KEY_COLOR_MODE = "extra_color_mode";
@@ -51,11 +35,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_sample);
 
-        ButterKnife.bind(this);
+        ButterKnife.bind(SampleActivity.this);
 
         setSupportActionBar(mToolbar);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(ContextCompat.getColor(SampleActivity.this, R.color.colorPrimaryDark));
+        }
 
         mColor = savedInstanceState != null
                 ? savedInstanceState.getInt(KEY_COLOR)
@@ -100,6 +88,8 @@ public class MainActivity extends AppCompatActivity {
                         mColor = color;
                     }
                 })
+                .setPositiveButtonText(getString(R.string.button_positive))
+                .setNegativeButtonText(getString(R.string.button_negative))
                 .create()
                 .show(getSupportFragmentManager(), "dialog");
     }
@@ -115,5 +105,9 @@ public class MainActivity extends AppCompatActivity {
 
         mToolbar.setBackground(transition);
         transition.startTransition(300);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(newColor);
+        }
     }
 }
