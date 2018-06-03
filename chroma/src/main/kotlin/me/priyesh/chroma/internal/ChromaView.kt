@@ -30,68 +30,87 @@ import me.priyesh.chroma.R
 
 internal class ChromaView : RelativeLayout {
 
-  companion object {
-    val DefaultColor = Color.GRAY
-    val DefaultModel = ColorMode.RGB
-  }
-
-  @ColorInt var currentColor: Int private set
-
-  val colorMode: ColorMode
-
-  constructor(context: Context) : this(DefaultColor, DefaultModel, context)
-
-  constructor(@ColorInt initialColor: Int?, colorMode: ColorMode, context: Context) : super(context) {
-    this.currentColor = initialColor!!
-    this.colorMode = colorMode
-    init()
-  }
-
-  private fun init(): Unit {
-    inflate(context, R.layout.chroma_view, this)
-    clipToPadding = false
-
-    val colorView = findViewById<View>(R.id.color_view)
-    colorView.setBackgroundColor(currentColor)
-
-    val channelViews = colorMode.channels.map { ChannelView(it, currentColor, context) }
-
-    val seekbarChangeListener: () -> Unit = {
-      currentColor = colorMode.evaluateColor(channelViews.map { it.channel })
-      colorView.setBackgroundColor(currentColor)
+    companion object {
+        val DefaultColor = Color.GRAY
+        val DefaultModel = ColorMode.RGB
+        val DefaultPositive = "OK"
+        val DefaultNegative = "Cancel"
     }
 
-    val channelContainer = findViewById(R.id.channel_container) as ViewGroup
-    channelViews.forEach { it ->
-      channelContainer.addView(it)
+    @ColorInt
+    var currentColor: Int
+        private set
 
-      val layoutParams = it.layoutParams as LinearLayout.LayoutParams
-      layoutParams.topMargin = resources.getDimensionPixelSize(R.dimen.channel_view_margin_top)
-      layoutParams.bottomMargin = resources.getDimensionPixelSize(R.dimen.channel_view_margin_bottom)
+    val colorMode: ColorMode
 
-      it.registerListener(seekbarChangeListener)
+    var positiveButtonMessage: String = DefaultPositive
+    var negativeButtonMessage: String = DefaultNegative
+
+    constructor(context: Context) : this(DefaultColor, DefaultModel, context, DefaultPositive, DefaultNegative)
+
+    constructor(@ColorInt initialColor: Int?, colorMode: ColorMode, context: Context) : super(context) {
+        this.currentColor = initialColor!!
+        this.colorMode = colorMode
+        init()
     }
-  }
 
-  internal interface ButtonBarListener {
-    fun onPositiveButtonClick(color: Int)
-    fun onNegativeButtonClick()
-  }
-
-  internal fun enableButtonBar(listener: ButtonBarListener?): Unit {
-    with(findViewById<LinearLayout>(R.id.button_bar)) {
-      val positiveButton = findViewById<Button>(R.id.positive_button)
-      val negativeButton = findViewById<Button>(R.id.negative_button)
-
-      if (listener != null) {
-        visibility = VISIBLE
-        positiveButton.setOnClickListener { listener.onPositiveButtonClick(currentColor) }
-        negativeButton.setOnClickListener { listener.onNegativeButtonClick() }
-      } else {
-        visibility = GONE
-        positiveButton.setOnClickListener(null)
-        negativeButton.setOnClickListener(null)
-      }
+    constructor(@ColorInt initialColor: Int?, colorMode: ColorMode, context: Context, positiveButtonMessage: String, negativeButtonMessage: String) : super(context) {
+        this.currentColor = initialColor!!
+        this.colorMode = colorMode
+        this.positiveButtonMessage = positiveButtonMessage
+        this.negativeButtonMessage = negativeButtonMessage
+        init()
     }
-  }
+
+    private fun init(): Unit {
+        inflate(context, R.layout.chroma_view, this)
+        clipToPadding = false
+
+        val colorView = findViewById<View>(R.id.color_view)
+        colorView.setBackgroundColor(currentColor)
+
+        val channelViews = colorMode.channels.map { ChannelView(it, currentColor, context) }
+
+        val seekbarChangeListener: () -> Unit = {
+            currentColor = colorMode.evaluateColor(channelViews.map { it.channel })
+            colorView.setBackgroundColor(currentColor)
+        }
+
+        val channelContainer = findViewById(R.id.channel_container) as ViewGroup
+        channelViews.forEach { it ->
+            channelContainer.addView(it)
+
+            val layoutParams = it.layoutParams as LinearLayout.LayoutParams
+            layoutParams.topMargin = resources.getDimensionPixelSize(R.dimen.channel_view_margin_top)
+            layoutParams.bottomMargin = resources.getDimensionPixelSize(R.dimen.channel_view_margin_bottom)
+
+            it.registerListener(seekbarChangeListener)
+        }
+    }
+
+    internal interface ButtonBarListener {
+        fun onPositiveButtonClick(color: Int)
+        fun onNegativeButtonClick()
+    }
+
+    internal fun enableButtonBar(listener: ButtonBarListener?): Unit {
+        with(findViewById<LinearLayout>(R.id.button_bar)) {
+            val positiveButton = findViewById<Button>(R.id.positive_button)
+            val negativeButton = findViewById<Button>(R.id.negative_button)
+
+            positiveButton.setText(positiveButtonMessage)
+            negativeButton.setText(negativeButtonMessage)
+
+
+            if (listener != null) {
+                visibility = VISIBLE
+                positiveButton.setOnClickListener { listener.onPositiveButtonClick(currentColor) }
+                negativeButton.setOnClickListener { listener.onNegativeButtonClick() }
+            } else {
+                visibility = GONE
+                positiveButton.setOnClickListener(null)
+                negativeButton.setOnClickListener(null)
+            }
+        }
+    }
 }

@@ -88,6 +88,8 @@ public class SampleActivity extends AppCompatActivity {
                         mColor = color;
                     }
                 })
+                .positiveButton(getString(R.string.button_positive))
+                .negativeButton(getString(R.string.button_negative))
                 .create()
                 .show(getSupportFragmentManager(), "dialog");
     }
